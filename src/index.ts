@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import StatusCodes from 'http-status-codes';
 
 const PORT = 3000;
 const APP = express();
@@ -8,17 +9,23 @@ APP.use(express.json());
 APP.use(express.urlencoded({ extended: true }));
 
 /** Set up Users Endpoint */
+APP.get('/user/all', (req: Request, res: Response) => {
+  return res.status(StatusCodes.OK).json(getAllUsers());
+});
 APP.get('/user/:username', (req: Request, res: Response) => {
-  res.send('This is where I would send you user data...If I had any!');
+  return res.status(StatusCodes.OK).json(getUser(req.params));
 });
 APP.post('/user/:username', (req: Request, res: Response) => {
-  res.send('Your request to add a new user has been received and ignored.');
+  return res.status(StatusCodes.CREATED).json(createOneUser(req.params));
 });
-APP.put('/user/:username', (req: Request, res: Response) => {
-  res.send('Your request to update a user has been received and ignored.');
+APP.put('/user/:username/bio', (req: Request, res: Response) => {
+  return res.status(StatusCodes.ACCEPTED).json(editUserBio(req.params));
+});
+APP.put('/user/:username/password', (req: Request, res: Response) => {
+  return res.status(StatusCodes.ACCEPTED).json(editUserPassword(req.params));
 });
 APP.delete('/user/:username', (req: Request, res: Response) => {
-  res.send('Your request to delete a user has been received and ignored.');
+  return res.status(StatusCodes.OK).json(deleteUser(req.params));
 });
 
 /** Set up Chirps Endpoint */
