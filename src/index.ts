@@ -7,11 +7,6 @@ const APP = express();
 APP.use(express.json());
 APP.use(express.urlencoded({ extended: true }));
 
-/** Set up Root Endpoint (not used at the moment) */
-APP.get('/', (req: Request, res: Response) => {
-  res.send('This endpoint is not in use by our API.');
-});
-
 /** Set up Users Endpoint */
 APP.get('/user/:username', (req: Request, res: Response) => {
   res.send('This is where I would send you user data...If I had any!');
