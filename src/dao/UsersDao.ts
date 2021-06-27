@@ -1,6 +1,6 @@
 // import dynamodb & dotenv
-import { DynamoDBClient, ScanCommand, QueryCommand } from '@aws-sdk/client-dynamodb';
-import { PutCommand } from "@aws-sdk/lib-dynamodb";
+import { DynamoDBClient, ScanCommand } from '@aws-sdk/client-dynamodb';
+import { PutCommand, GetCommand } from "@aws-sdk/lib-dynamodb";
 import { config } from 'dotenv';
 config();
 
@@ -18,19 +18,18 @@ export default class UsersDao{
         }
 
         const users = await client.send(new ScanCommand(params));
-        return Promise.resolve(JSON.stringify(users.Items));
+        return Promise.resolve(users.Items);
     }
 
     // gets one user
     public async getOneUser(username){
         const params = {
             TableName: USERS_TABLE,
-            KeyConditionExpression: "username = :username",
-            ExpressionAttributeValues: {":username": { S: username }}
+            Key: {"username": username},
         }
 
-        const user = await client.send(new QueryCommand(params));
-        return Promise.resolve(JSON.stringify(user.Items));
+        const user = await client.send(new GetCommand(params));
+        return Promise.resolve(user.Item);
     }
 
     // creates a user
@@ -50,7 +49,6 @@ export default class UsersDao{
 }
 
 // TESTING STUFF ONLY - DELETE AFTER
-// ALSO DELETE STRINGIFY ON RETURNS
 
 // async function test(){
 //     const dao = new UsersDao();
@@ -67,7 +65,7 @@ export default class UsersDao{
 async function test(){
     const dao = new UsersDao();
     const get = await dao.getOneUser("redoral");
-    console.log(get);
+    console.log(JSON.stringify(get));
 }
 
 test();
