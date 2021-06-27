@@ -1,17 +1,18 @@
-// import dynamodb & dotenv
-import { DynamoDBClient, ScanCommand } from '@aws-sdk/client-dynamodb';
-import { PutCommand, GetCommand } from "@aws-sdk/lib-dynamodb";
+// import dynamodb, dotenv, & bcrypt, calls dotenv config
+import { DynamoDBClient, ScanCommand, Update } from '@aws-sdk/client-dynamodb';
+import { PutCommand, GetCommand, UpdateCommand, DeleteCommand } from "@aws-sdk/lib-dynamodb";
 import { config } from 'dotenv';
+import bcrypt  from 'bcrypt';
 config();
 
-// creates a new dynamodb client
+// creates a new dynamodb client, defines users table
 const client = new DynamoDBClient({ region: "us-east-2" });
 const USERS_TABLE = process.env.USERS_TABLE;
 
 // default usersDao class
 export default class UsersDao{
 
-    // gets all users
+    // gets all users using ScanCommand()
     public async getUsers(){
         const params = {
             TableName: USERS_TABLE
@@ -21,8 +22,8 @@ export default class UsersDao{
         return Promise.resolve(users.Items);
     }
 
-    // gets one user
-    public async getOneUser(username){
+    // gets one user using GetCommand()
+    public async getOneUser(username:string){
         const params = {
             TableName: USERS_TABLE,
             Key: {"username": username},
@@ -32,8 +33,8 @@ export default class UsersDao{
         return Promise.resolve(user.Item);
     }
 
-    // creates a user
-    public async createUser(user){
+    // creates a user using PutCommand()
+    public async createUser(user: {}){
         const params = {
             TableName: USERS_TABLE,
             Item: user
@@ -41,17 +42,77 @@ export default class UsersDao{
 
         try {
          await client.send(new PutCommand(params));
-            console.log("Success");
+            console.log("User has been created.");
         } catch (err) {
-            console.log("Error: " + err);
+            console.log("Error: ", err);
         }
     }
+
+    
+    // updates a users bio using the UpdateCommand()
+    public async updateUserBio(username: string, bio: string){
+        const params = {
+            TableName: USERS_TABLE,
+            Key: { "username": username },
+            UpdateExpression: "set bio = :bio",
+            ExpressionAttributeValues: { ":bio": bio }
+        }
+
+        try {
+         await client.send(new UpdateCommand(params));
+            console.log("Bio updated.");
+        } catch (err) {
+            console.log("Error: ", err);
+        }
+    }
+
+    // updates a users password using the UpdateCommand()
+    public async updateUserPassword(username: string, password){
+        const params = {
+            TableName: USERS_TABLE,
+            Key: { "username": username },
+            UpdateExpression: "set password = :password",
+            ExpressionAttributeValues: { ":password": password }
+        }
+
+        try {
+            await client.send(new UpdateCommand(params));
+            console.log("Password updated.");
+  
+        } catch (err) {
+            console.log("Error: ", err);
+        }
+    }
+
+    // deletes a user using the DeleteCommand()
+    public async deleteUser(username: string){
+        const params = {
+            TableName: USERS_TABLE,
+            Key: {"username": username},
+        }
+
+        try {
+            await client.send(new DeleteCommand(params));
+            console.log("User deleted.");
+        } catch (err){
+            console.log("Error: ", err)
+        }
+    }
+
 }
 
-// TESTING STUFF ONLY - DELETE AFTER
+/* TESTING STUFF ONLY - DELETE AFTER */
 
-// async function test(){
-//     const dao = new UsersDao();
+const dao = new UsersDao();
+
+// async function getOneTest(){
+//     const get = await dao.getOneUser("redoral");
+//     console.log(JSON.stringify(get));
+// }
+// getOneTest() PASSED
+
+
+// async function createTest(){
 //     const get = await dao.createUser(
 //         {
 //             "username":"redoral",
@@ -61,12 +122,24 @@ export default class UsersDao{
 //         }
 //     );
 // }
+// putTest(); PASSED
 
-async function test(){
-    const dao = new UsersDao();
-    const get = await dao.getOneUser("redoral");
-    console.log(JSON.stringify(get));
-}
+// async function updateBioTest(){
+//     await dao.updateUserBio("redoral", "not cool like johnny test :(");
+// }
+// updateBioTest(); PASSED
 
-test();
+// async function updatePassTest(){
+//     const saltRounds = 10;
+//     const password = "password123";
+//     bcrypt.hash(password, saltRounds, async function(err, hash) {
+//         await dao.updateUserPassword("redoral", hash);
+//     });
+// }
+// updatePassTest(); PASSED
+
+// async function deleteUserTest(){
+//     await dao.deleteUser("redoral");
+// }
+// deleteUserTest(); PASSED
 
