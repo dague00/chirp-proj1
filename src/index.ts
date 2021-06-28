@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import StatusCodes from 'http-status-codes';
 
 const PORT = 3000;
 const APP = express();
@@ -7,19 +8,15 @@ const APP = express();
 APP.use(express.json());
 APP.use(express.urlencoded({ extended: true }));
 
+//edit functions to be calls only
+
 /** Set up Users Endpoint */
-APP.get('/user/:username', (req: Request, res: Response) => {
-  res.send('This is where I would send you user data...If I had any!');
-});
-APP.post('/user/:username', (req: Request, res: Response) => {
-  res.send('Your request to add a new user has been received and ignored.');
-});
-APP.put('/user/:username', (req: Request, res: Response) => {
-  res.send('Your request to update a user has been received and ignored.');
-});
-APP.delete('/user/:username', (req: Request, res: Response) => {
-  res.send('Your request to delete a user has been received and ignored.');
-});
+APP.get('/user/all', getAllUsers);
+APP.get('/user/:username', getUser);
+APP.post('/user/:username', createOneUser);
+APP.put('/user/:username/bio', editUserBio);
+APP.put('/user/:username/password', editUserPassword);
+APP.delete('/user/:username', deleteUser);
 
 /** Set up Chirps Endpoint */
 APP.get('/chirp/all', (req: Request, res: Response) => {

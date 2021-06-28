@@ -19,6 +19,7 @@
     "@aws-sdk/client-dynamodb": "^3.18.0",
     "@aws-sdk/lib-dynamodb": "^3.18.0",
     "express": "^4.17.1",
+    "http-status-codes": "^2.1.4",
     "uuidv4": "^6.2.10"
   },
   "devDependencies": {
