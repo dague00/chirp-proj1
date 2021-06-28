@@ -1,25 +1,25 @@
 // import dynamodb, dotenv, & bcrypt, calls dotenv config
-import { DynamoDBClient, ScanCommand, Update } from '@aws-sdk/client-dynamodb';
+import { DynamoDBClient, ScanCommand } from '@aws-sdk/client-dynamodb';
 import { PutCommand, GetCommand, UpdateCommand, DeleteCommand } from "@aws-sdk/lib-dynamodb";
 import { config } from 'dotenv';
 import bcrypt  from 'bcrypt';
 config();
 
 // creates a new dynamodb client, defines users table
-const client = new DynamoDBClient({ region: "us-east-2" });
+const client = new DynamoDBClient({ region: process.env.AWS_DEFAULT_REGION });
 const USERS_TABLE = process.env.USERS_TABLE;
 
 // default usersDao class
 export default class UsersDao{
 
     // gets all users using ScanCommand()
-    public async getUsers(){
+    public async getAllUsers(){
         const params = {
             TableName: USERS_TABLE
         }
 
         const users = await client.send(new ScanCommand(params));
-        return Promise.resolve(users.Items);
+        return users.Items;
     }
 
     // gets one user using GetCommand()
@@ -30,7 +30,7 @@ export default class UsersDao{
         }
 
         const user = await client.send(new GetCommand(params));
-        return Promise.resolve(user.Item);
+        return user.Item;
     }
 
     // creates a user using PutCommand()
@@ -41,14 +41,14 @@ export default class UsersDao{
         }
 
         try {
-         await client.send(new PutCommand(params));
+            await client.send(new PutCommand(params));
+            
             console.log("User has been created.");
         } catch (err) {
             console.log("Error: ", err);
         }
     }
 
-    
     // updates a users bio using the UpdateCommand()
     public async updateUserBio(username: string, bio: string){
         const params = {
@@ -103,13 +103,20 @@ export default class UsersDao{
 
 /* TESTING STUFF ONLY - DELETE AFTER */
 
-const dao = new UsersDao();
+// const dao = new UsersDao();
+
+// async function getAllUsers(){
+//     const get = await dao.getUsers();
+//     console.log(JSON.stringify(get));
+// }
+
+// getAllUsers();
 
 // async function getOneTest(){
 //     const get = await dao.getOneUser("redoral");
 //     console.log(JSON.stringify(get));
 // }
-// getOneTest() PASSED
+// getOneTest();
 
 
 // async function createTest(){
@@ -122,12 +129,12 @@ const dao = new UsersDao();
 //         }
 //     );
 // }
-// putTest(); PASSED
+// createTest();
 
 // async function updateBioTest(){
 //     await dao.updateUserBio("redoral", "not cool like johnny test :(");
 // }
-// updateBioTest(); PASSED
+// updateBioTest(); 
 
 // async function updatePassTest(){
 //     const saltRounds = 10;
@@ -136,10 +143,10 @@ const dao = new UsersDao();
 //         await dao.updateUserPassword("redoral", hash);
 //     });
 // }
-// updatePassTest(); PASSED
+// updatePassTest(); 
 
 // async function deleteUserTest(){
 //     await dao.deleteUser("redoral");
 // }
-// deleteUserTest(); PASSED
+// deleteUserTest(); 
 
