@@ -8,25 +8,15 @@ const APP = express();
 APP.use(express.json());
 APP.use(express.urlencoded({ extended: true }));
 
+//edit functions to be calls only
+
 /** Set up Users Endpoint */
-APP.get('/user/all', (req: Request, res: Response) => {
-  return res.status(StatusCodes.OK).json(getAllUsers());
-});
-APP.get('/user/:username', (req: Request, res: Response) => {
-  return res.status(StatusCodes.OK).json(getUser(req.params));
-});
-APP.post('/user/:username', (req: Request, res: Response) => {
-  return res.status(StatusCodes.CREATED).json(createOneUser(req.params));
-});
-APP.put('/user/:username/bio', (req: Request, res: Response) => {
-  return res.status(StatusCodes.ACCEPTED).json(editUserBio(req.params));
-});
-APP.put('/user/:username/password', (req: Request, res: Response) => {
-  return res.status(StatusCodes.ACCEPTED).json(editUserPassword(req.params));
-});
-APP.delete('/user/:username', (req: Request, res: Response) => {
-  return res.status(StatusCodes.OK).json(deleteUser(req.params));
-});
+APP.get('/user/all', getAllUsers);
+APP.get('/user/:username', getUser);
+APP.post('/user/:username', createOneUser);
+APP.put('/user/:username/bio', editUserBio);
+APP.put('/user/:username/password', editUserPassword);
+APP.delete('/user/:username', deleteUser);
 
 /** Set up Chirps Endpoint */
 APP.get('/chirp/all', (req: Request, res: Response) => {
