@@ -13,21 +13,31 @@ export default class ChripsDao{
     // gets all chirps using ScanCommand()
     public async getAllChirps(){
         const params = { TableName: CHIRPS_TABLE }
-
-        const chirps = await client.send(new ScanCommand(params));
-        return chirps.Items;
+        
+        try{
+            const chirps = await client.send(new ScanCommand(params));
+            return chirps.Items;
+        } catch(err) {
+            console.log("Error: ", err);
+        }
     }
 
     // gets all chirps by one user using QueryCommand()
     public async getChirpsByUser(username:string){
         const params = {
             TableName: CHIRPS_TABLE,
+            IndexName: "username-index",
+            Key: {"username": username},
             ExpressionAttributeValues: {":username": username },
             KeyConditionExpression: "username = :username"
         }
 
-        const chirps = await client.send(new QueryCommand(params));
-        return chirps.Items;
+        try {
+            const chirps = await client.send(new QueryCommand(params));
+            return chirps.Items;
+        } catch (err){
+            console.log("Error: ", err);
+        }
     }
 
      // gets one chirp using GetCommand()
@@ -45,8 +55,7 @@ export default class ChripsDao{
     public async postChirp(chirp: {}){
         const params = {
             TableName: CHIRPS_TABLE,
-            Item: chirp,
-            
+            Item: chirp,  
         }
 
         try {
@@ -58,10 +67,10 @@ export default class ChripsDao{
     }
 
     // updates a chirp's body using UpdateCommand()
-    public async editChirp(username: string, chirpBody: string){
+    public async editChirp(timestamp, chirpBody: string){
         const params = {
             TableName: CHIRPS_TABLE,
-            Key: { "username": username },
+            Key: { "timestamp": timestamp },
             UpdateExpression: "set body = :body",
             ExpressionAttributeValues: { ":body": chirpBody }
         }
@@ -88,5 +97,4 @@ export default class ChripsDao{
             console.log("Error: ", err)
         }
     }
-    
 }

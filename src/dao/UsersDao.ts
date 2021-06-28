@@ -23,7 +23,7 @@ export default class UsersDao{
     }
 
     // gets one user using GetCommand()
-    public async getOneUser(username:string){
+    public async getUser(username:string){
         const params = {
             TableName: USERS_TABLE,
             Key: {"username": username},
@@ -100,53 +100,3 @@ export default class UsersDao{
     }
 
 }
-
-/* TESTING STUFF ONLY - DELETE AFTER */
-
-// const dao = new UsersDao();
-
-// async function getAllUsers(){
-//     const get = await dao.getUsers();
-//     console.log(JSON.stringify(get));
-// }
-
-// getAllUsers();
-
-// async function getOneTest(){
-//     const get = await dao.getOneUser("redoral");
-//     console.log(JSON.stringify(get));
-// }
-// getOneTest();
-
-
-// async function createTest(){
-//     const get = await dao.createUser(
-//         {
-//             "username":"redoral",
-//             "password":"no",
-//             "bio":"not cool like johnnytest",
-//             "following":["johnnytest", "johnnytestfan12"]
-//         }
-//     );
-// }
-// createTest();
-
-// async function updateBioTest(){
-//     await dao.updateUserBio("redoral", "not cool like johnny test :(");
-// }
-// updateBioTest(); 
-
-// async function updatePassTest(){
-//     const saltRounds = 10;
-//     const password = "password123";
-//     bcrypt.hash(password, saltRounds, async function(err, hash) {
-//         await dao.updateUserPassword("redoral", hash);
-//     });
-// }
-// updatePassTest(); 
-
-// async function deleteUserTest(){
-//     await dao.deleteUser("redoral");
-// }
-// deleteUserTest(); 
-
