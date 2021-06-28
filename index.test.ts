@@ -1,7 +1,8 @@
-//import * as DocumentClient from 'aws-sdk/clients/dynamodb';
+// import * as DocumentClient from 'aws-sdk/clients/dynamodb';
 const {DocumentClient} = require('aws-sdk/clients/dynamodb');
 
-const isTest = process.env.JEST_WORKER_ID;
+// https://jestjs.io/docs/environment-variables
+const isTest = process.env.JEST_WORKER_ID || 1;
 const config = {
   convertEmptyValues: true,
   ...(isTest && {
