@@ -27,7 +27,7 @@ export default class ChripsDao{
         const params = {
             TableName: CHIRPS_TABLE,
             IndexName: "username-index",
-            Key: {"username": username},
+            Key: { "username": username },
             ExpressionAttributeValues: {":username": username },
             KeyConditionExpression: "username = :username"
         }
@@ -44,11 +44,15 @@ export default class ChripsDao{
      public async getChirp(timestamp:string){
         const params = {
             TableName: CHIRPS_TABLE,
-            Key: {"timestamp": timestamp},
+            Key: { "timestamp": timestamp },
         }
 
+        try{
         const chirp = await client.send(new GetCommand(params));
         return chirp.Item;
+        } catch (err){
+            console.log("Error: ", err)
+        }
     }
 
     // creates a new chirp using PutCommand()
@@ -67,7 +71,7 @@ export default class ChripsDao{
     }
 
     // updates a chirp's body using UpdateCommand()
-    public async editChirp(timestamp, chirpBody: string){
+    public async editChirp(timestamp:string, chirpBody: string){
         const params = {
             TableName: CHIRPS_TABLE,
             Key: { "timestamp": timestamp },
@@ -87,7 +91,7 @@ export default class ChripsDao{
     public async deleteChirp(timestamp: string){
         const params = {
             TableName: CHIRPS_TABLE,
-            Key: {"timestamp": timestamp},
+            Key: { "timestamp": timestamp },
         }
 
         try {

@@ -2,7 +2,6 @@
 import { DynamoDBClient, ScanCommand } from '@aws-sdk/client-dynamodb';
 import { PutCommand, GetCommand, UpdateCommand, DeleteCommand } from "@aws-sdk/lib-dynamodb";
 import { config } from 'dotenv';
-import bcrypt  from 'bcrypt';
 config();
 
 // creates a new dynamodb client, defines users table
@@ -14,23 +13,29 @@ export default class UsersDao{
 
     // gets all users using ScanCommand()
     public async getAllUsers(){
-        const params = {
-            TableName: USERS_TABLE
-        }
+        const params = { TableName: USERS_TABLE}
 
-        const users = await client.send(new ScanCommand(params));
-        return users.Items;
+        try{
+            const users = await client.send(new ScanCommand(params));
+            return users.Items;
+        } catch (err){
+            console.log("Error: ", err);
+        }
     }
 
     // gets one user using GetCommand()
     public async getUser(username:string){
         const params = {
             TableName: USERS_TABLE,
-            Key: {"username": username},
+            Key: { "username": username },
         }
 
-        const user = await client.send(new GetCommand(params));
-        return user.Item;
+        try {
+            const user = await client.send(new GetCommand(params));
+            return user.Item;
+        } catch (err){
+            console.log("Error: ", err);
+        }
     }
 
     // creates a user using PutCommand()
@@ -42,7 +47,6 @@ export default class UsersDao{
 
         try {
             await client.send(new PutCommand(params));
-            
             console.log("User has been created.");
         } catch (err) {
             console.log("Error: ", err);
@@ -67,7 +71,7 @@ export default class UsersDao{
     }
 
     // updates a users password using the UpdateCommand()
-    public async updateUserPassword(username: string, password){
+    public async updateUserPassword(username: string, password:string){
         const params = {
             TableName: USERS_TABLE,
             Key: { "username": username },
