@@ -1,5 +1,5 @@
 import express from 'express';
-import{
+import {
   getChirps,
   getUserChirps,
   getAChirp,
@@ -7,7 +7,7 @@ import{
   updateChirp,
   deleteOneChirp
 } from './controllers/chirpControllers';
-import{
+import {
   getAllUsers,
   getUser,
   createOneUser,
@@ -35,7 +35,7 @@ APP.delete('/user/:username', deleteUser);
 
 /** Set up Chirps Endpoint */
 APP.get('/chirp/all', getChirps);
-APP.get('/chirp/:username', getUserChirps);
+APP.get('/:username', getUserChirps);
 APP.get('/chirp/:timestamp', getAChirp);
 APP.post('/chirp', PostOneChirp);
 APP.put('/chirp/:timestamp', updateChirp);
