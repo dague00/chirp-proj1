@@ -5,7 +5,7 @@ const userDao = new UsersDao();
 
 // Create user controller
 export const createOneUser = async (req: Request, res: Response) => {
-  let { user } = req.params;
+  let user = req.body;
   res.status(200).json(await userDao.createUser(user));
 };
 

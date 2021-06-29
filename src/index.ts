@@ -21,7 +21,7 @@ APP.use(express.urlencoded({ extended: true }));
 /** Set up Users Endpoint */
 APP.get('/user/all', getAllUsers);
 APP.get('/user/:username', getUser);
-APP.post('/user/:username', createOneUser);
+APP.post('/user', createOneUser);
 APP.put('/user/:username/bio', editUserBio);
 APP.put('/user/:username/password', editUserPassword);
 APP.delete('/user/:username', deleteUser);
