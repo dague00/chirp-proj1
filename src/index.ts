@@ -1,6 +1,13 @@
-import express, { Request, Response } from 'express';
-import StatusCodes from 'http-status-codes';
-import {
+import express from 'express';
+import{
+  getChirps,
+  getUserChirps,
+  getAChirp,
+  PostOneChirp,
+  updateChirp,
+  deleteOneChirp
+} from './controllers/chirpControllers';
+import{
   getAllUsers,
   getUser,
   createOneUser,
@@ -27,23 +34,12 @@ APP.put('/user/:username/password', editUserPassword);
 APP.delete('/user/:username', deleteUser);
 
 /** Set up Chirps Endpoint */
-// APP.get('/chirp/all', (req: Request, res: Response) => {
-//   res.send('This is where I would send you all my chirps...If I had any!');
-// });
-// APP.get('/chirp/:username', (req: Request, res: Response) => {
-//   res.send(
-//     'This is where I would send you all the chirps from this user...If I had any!'
-//   );
-// });
-// APP.post('/chirp', (req: Request, res: Response) => {
-//   res.send('Your request to add a new chirp has been received and ignored.');
-// });
-// APP.put('/chirp/:timestamp', (req: Request, res: Response) => {
-//   res.send('Your request to edit a chirp has been received and ignored.');
-// });
-// APP.delete('/chirp/:timestamp', (req: Request, res: Response) => {
-//   res.send('Your request to delete a chirp has been received and ignored.');
-// });
+APP.get('/chirp/all', getChirps);
+APP.get('/chirp/:username', getUserChirps);
+APP.get('/chirp/:timestamp', getAChirp);
+APP.post('/chirp', PostOneChirp);
+APP.put('/chirp/:timestamp', updateChirp);
+APP.delete('/chirp/:timestamp', deleteOneChirp);
 
 /** Begin Listening for Requests */
 APP.listen(PORT, () => {
