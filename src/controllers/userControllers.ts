@@ -7,34 +7,32 @@ const userDao = new UsersDao();
 
 export const createOneUser = async (req: Request, res: Response) => {
   let user = req.body.user;
-  await userDao.createUser(user);
+  res.status(200).json(await userDao.createUser(user));
 };
 
-export const getUser = async (req: Request, res: Response) => {
-  let username = req.params.username;
-  const data = await userDao.getUser(username);
-  return data;
-};
+export async function getUser(req: Request, res: Response) {
+  const username = req.params.username;
+  return res.status(200).json(await userDao.getUser(username));
+}
 
 export const editUserBio = async (req: Request, res: Response) => {
   let username = req.params.username;
   let bio = req.body.bio;
 
-  await userDao.updateUserBio(username, bio);
+  res.status(200).json(await userDao.updateUserBio(username, bio));
 };
 
 export const editUserPassword = async (req: Request, res: Response) => {
   let { username } = req.params;
   let { password } = req.body;
-  await userDao.updateUserPassword(username, password);
+  res.status(200).json(await userDao.updateUserPassword(username, password));
 };
 
 export const deleteUser = async (req: Request, res: Response) => {
-  let username = req.params.userame;
-  await userDao.deleteUser(username);
+  let username = req.params.username;
+  res.status(200).json(await userDao.deleteUser(username));
 };
 
 export const getAllUsers = async (req: Request, res: Response) => {
-  const data = await userDao.getAllUsers();
-  return data;
+  return res.status(200).json(await userDao.getAllUsers());
 };
