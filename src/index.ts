@@ -1,4 +1,20 @@
 import express from 'express';
+import{
+  getChirps,
+  getUserChirps,
+  getAChirp,
+  PostOneChirp,
+  updateChirp,
+  deleteOneChirp
+} from './controllers/chirpControllers';
+import{
+  getAllUsers,
+  getUser,
+  createOneUser,
+  editUserBio,
+  editUserPassword,
+  deleteUser
+} from './controllers/userControllers';
 
 const PORT = 3000;
 const APP = express();
@@ -21,7 +37,7 @@ APP.delete('/user/:username', deleteUser);
 APP.get('/chirp/all', getChirps);
 APP.get('/chirp/:username', getUserChirps);
 APP.get('/chirp/:timestamp', getAChirp);
-APP.post('/chirp', postOneChirp);
+APP.post('/chirp', PostOneChirp);
 APP.put('/chirp/:timestamp', updateChirp);
 APP.delete('/chirp/:timestamp', deleteOneChirp);
 
