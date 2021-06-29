@@ -1,6 +1,6 @@
 module.exports = {
     "roots": [
-      "<rootDir>/src"
+      "<rootDir>"
     ],
     "testMatch": [
       "**/__tests__/**/*.+(ts|tsx|js)",
@@ -9,5 +9,5 @@ module.exports = {
     "transform": {
       "^.+\\.(ts|tsx)$": "ts-jest"
     },
-    "preset": "@shelf/jest-dynamodb"
+    //"preset": "@shelf/jest-dynamodb"
   }
