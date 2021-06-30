@@ -2,7 +2,7 @@ module.exports = {
     tables: [
       {
         TableName: `chirper_users`,
-        KeySchema: [{AttributeName: 'id', KeyType: 'HASH'}],
+        KeySchema: [{AttributeName: 'username', KeyType: 'HASH'}],
         AttributeDefinitions: [
                                 {AttributeName: 'username', AttributeType: 'S'},
                                 {AttributeName: 'password', AttributeType: 'S'},
