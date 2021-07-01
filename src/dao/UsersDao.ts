@@ -9,8 +9,19 @@ import {
 import { config } from 'dotenv';
 config();
 
+const config_test = {
+  convertEmptyValues: true,
+  ...(process.env.MOCK_DYNAMODB_ENDPOINT && {
+    endpoint: process.env.MOCK_DYNAMODB_ENDPOINT,
+    sslEnabled: false,
+    region: "local",
+  }),
+};
+
+
 // creates a new dynamodb client, defines users table
-const client = new DynamoDBClient({ region: process.env.AWS_DEFAULT_REGION });
+// const client = new DynamoDBClient({ region: process.env.AWS_DEFAULT_REGION });
+const client = new DynamoDBClient(config_test);
 const USERS_TABLE = process.env.USERS_TABLE;
 
 // default usersDao class

@@ -4,10 +4,7 @@ module.exports = {
       TableName: "chirper_users",
       KeySchema: [{ AttributeName: "username", KeyType: "HASH" }],
       AttributeDefinitions: [
-              { AttributeName: "username", AttributeType: "S" },
-              // { AttributeName: "password", AttributeType: "S" },
-              // { AttributeName: "bio", AttributeType: "S" },
-              // { AttributeName: "following", AttributeType: "L" },
+              { AttributeName: "username", AttributeType: "S" }
           ],
       ProvisionedThroughput: {
         ReadCapacityUnits: 1,
