@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --detectOpenHandles --coverage --coverageDirectory='coverage'",
     "start": "nodemon src/index.ts",
     "dev": "nodemon src/dao/UsersDao.ts",
     "compile": "tsc -p ./"

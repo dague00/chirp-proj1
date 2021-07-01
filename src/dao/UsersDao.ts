@@ -86,21 +86,21 @@ export default class UsersDao {
   }
 
   // updates a users password using the UpdateCommand()
-  public async updateUserPassword(username: string, password: string) {
-    const params = {
-      TableName: USERS_TABLE,
-      Key: { username: username },
-      UpdateExpression: 'set password = :password',
-      ExpressionAttributeValues: { ':password': password }
-    };
+  // public async updateUserPassword(username: string, password: string) {
+  //   const params = {
+  //     TableName: USERS_TABLE,
+  //     Key: { username: username },
+  //     UpdateExpression: 'set password = :password',
+  //     ExpressionAttributeValues: { ':password': password }
+  //   };
 
-    try {
-      await client.send(new UpdateCommand(params));
-      console.log('Password updated.');
-    } catch (err) {
-      console.log('Error: ', err);
-    }
-  }
+  //   try {
+  //     await client.send(new UpdateCommand(params));
+  //     console.log('Password updated.');
+  //   } catch (err) {
+  //     console.log('Error: ', err);
+  //   }
+  // }
 
   // deletes a user using the DeleteCommand()
   public async deleteUser(username: string) {
