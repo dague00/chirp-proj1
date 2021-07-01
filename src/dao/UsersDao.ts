@@ -9,19 +9,19 @@ import {
 import { config } from 'dotenv';
 config();
 
-const config_test = {
-  convertEmptyValues: true,
-  ...(process.env.MOCK_DYNAMODB_ENDPOINT && {
-    endpoint: process.env.MOCK_DYNAMODB_ENDPOINT,
-    sslEnabled: false,
-    region: "local",
-  }),
-};
+// const config_test = {
+//   convertEmptyValues: true,
+//   ...(process.env.MOCK_DYNAMODB_ENDPOINT && {
+//     endpoint: process.env.MOCK_DYNAMODB_ENDPOINT,
+//     sslEnabled: false,
+//     region: "local",
+//   }),
+// };
 
 
 // creates a new dynamodb client, defines users table
-// const client = new DynamoDBClient({ region: process.env.AWS_DEFAULT_REGION });
-const client = new DynamoDBClient(config_test);
+const client = new DynamoDBClient({ region: process.env.AWS_DEFAULT_REGION });
+// const client = new DynamoDBClient(config_test);
 const USERS_TABLE = process.env.USERS_TABLE;
 
 // default usersDao class
@@ -84,24 +84,6 @@ export default class UsersDao {
       console.log('Error: ', err);
     }
   }
-
-  // updates a users password using the UpdateCommand()
-  // public async updateUserPassword(username: string, password: string) {
-  //   const params = {
-  //     TableName: USERS_TABLE,
-  //     Key: { username: username },
-  //     UpdateExpression: 'set password = :password',
-  //     ExpressionAttributeValues: { ':password': password }
-  //   };
-
-  //   try {
-  //     await client.send(new UpdateCommand(params));
-  //     console.log('Password updated.');
-  //   } catch (err) {
-  //     console.log('Error: ', err);
-  //   }
-  // }
-
   // deletes a user using the DeleteCommand()
   public async deleteUser(username: string) {
     const params = {
