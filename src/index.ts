@@ -12,25 +12,21 @@ import {
   getUser,
   createOneUser,
   editUserBio,
-  editUserPassword,
   deleteUser
 } from './controllers/userControllers';
 
 const PORT = 3000;
-const APP = express();
+export const APP = express();
 
 /** Set up Express Router */
 APP.use(express.json());
 APP.use(express.urlencoded({ extended: true }));
-
-//edit functions to be calls only
 
 /** Set up Users Endpoint */
 APP.get('/user/all', getAllUsers);
 APP.get('/user/:username', getUser);
 APP.post('/user', createOneUser);
 APP.put('/user/:username/bio', editUserBio);
-APP.put('/user/:username/password', editUserPassword);
 APP.delete('/user/:username', deleteUser);
 
 /** Set up Chirps Endpoint */
