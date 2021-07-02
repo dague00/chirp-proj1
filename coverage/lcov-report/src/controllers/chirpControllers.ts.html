@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>35/35</span>
+                <span class='fraction'>32/32</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>1/2</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>23/23</span>
+                <span class='fraction'>20/20</span>
             </div>
         
             
@@ -130,18 +130,9 @@
 <a name='L71'></a><a href='#L71'>71</a>
 <a name='L72'></a><a href='#L72'>72</a>
 <a name='L73'></a><a href='#L73'>73</a>
-<a name='L74'></a><a href='#L74'>74</a>
-<a name='L75'></a><a href='#L75'>75</a>
-<a name='L76'></a><a href='#L76'>76</a>
-<a name='L77'></a><a href='#L77'>77</a>
-<a name='L78'></a><a href='#L78'>78</a>
-<a name='L79'></a><a href='#L79'>79</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L74'></a><a href='#L74'>74</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -212,15 +203,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { Request, Response } from 'express';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Request, Response } from 'express';
 import ChirpsDao from '../dao/ChirpsDao';
-import { config } from 'dotenv';
-import { isTest, config_test } from '../shared/constants';
 &nbsp;
 const chirpDao = new ChirpsDao();
-const ddb = !isTest ?  <span class="branch-0 cbranch-no" title="branch not covered" >new DynamoDBClient( { region: process.env.AWS_DEFAULT_REGION } ) </span>: new DynamoDBClient( config_test );
 &nbsp;
 /**
  * Post chirp controller
@@ -230,7 +216,7 @@ const ddb = !isTest ?  <span class="branch-0 cbranch-no" title="branch not cover
  */
 export const PostOneChirp = async (req: Request, res: Response) =&gt; {
   let chirp = req.body;
-  res.status(200).json(await chirpDao.postChirp(ddb, chirp));
+  res.status(200).json(await chirpDao.postChirp(chirp));
 };
 &nbsp;
 /**
@@ -242,7 +228,7 @@ export const PostOneChirp = async (req: Request, res: Response) =&gt; {
  */
 export const getAChirp = async (req: Request, res: Response) =&gt; {
   const { timestamp } = req.params;
-  return res.status(200).json(await chirpDao.getChirp(ddb, timestamp));
+  return res.status(200).json(await chirpDao.getChirp(timestamp));
 }
 &nbsp;
 /**
@@ -254,7 +240,7 @@ export const getAChirp = async (req: Request, res: Response) =&gt; {
  */
 export const getUserChirps = async (req: Request, res: Response) =&gt; {
   const { username } = req.params;
-  return res.status(200).json(await chirpDao.getChirpsByUser(ddb, username));
+  return res.status(200).json(await chirpDao.getChirpsByUser(username));
 }
 &nbsp;
 /**
@@ -267,7 +253,7 @@ export const updateChirp = async (req: Request, res: Response) =&gt; {
   let { timestamp } = req.params;
   let chirpBody = req.body.body;
 &nbsp;
-  res.status(200).json(await chirpDao.editChirp(ddb, timestamp, chirpBody));
+  res.status(200).json(await chirpDao.editChirp(timestamp, chirpBody));
 };
 &nbsp;
 /**
@@ -278,7 +264,7 @@ export const updateChirp = async (req: Request, res: Response) =&gt; {
  */
 export const deleteOneChirp = async (req: Request, res: Response) =&gt; {
   let { timestamp } = req.params;
-  res.status(200).json(await chirpDao.deleteChirp(ddb, timestamp));
+  res.status(200).json(await chirpDao.deleteChirp(timestamp));
 };
 &nbsp;
 /**
@@ -289,16 +275,15 @@ export const deleteOneChirp = async (req: Request, res: Response) =&gt; {
  * @returns 
  */
 export const getChirps = async (req: Request, res: Response) =&gt; {
-  return res.status(200).json(await chirpDao.getAllChirps(ddb));
-};
-&nbsp;</pre></td></tr></table></pre>
+  return res.status(200).json(await chirpDao.getAllChirps());
+};</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Fri Jul 02 2021 10:57:19 GMT-0400 (Eastern Daylight Time)
+                at Fri Jul 02 2021 11:52:52 GMT-0400 (Eastern Daylight Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>

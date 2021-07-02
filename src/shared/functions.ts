@@ -26,26 +26,26 @@
  * @param scanResponse 
  * @returns 
  */
- export function formatScanResponse(scanResponse: Object){
-    let formattedScanResponse = {};
-    for (const [key, value] of Object.entries(scanResponse)){
-      if (typeof value === 'object'){
-        for (const [,nestedValue] of Object.entries(value)){
-          if (typeof nestedValue === 'object'){
-            let arr = [];
-            for (const x of nestedValue as Object[]){
-              const [y,] = Object.entries(x);
-              arr.push(y[1]);
-            }
-            formattedScanResponse[key] = arr;
-          } else {
-            formattedScanResponse[key] = nestedValue;
-          }     
-        }
-      }
-      else {
-        formattedScanResponse[key] = value;
+export function formatScanResponse(scanResponse: Object){
+  let formattedScanResponse = {};
+  for (const [key, value] of Object.entries(scanResponse)){
+    if (typeof value === 'object'){
+      for (const [,nestedValue] of Object.entries(value)){
+        if (typeof nestedValue === 'object'){
+          let arr = [];
+          for (const x of nestedValue as Object[]){
+            const [y,] = Object.entries(x);
+            arr.push(y[1]);
+          }
+          formattedScanResponse[key] = arr;
+        } else {
+          formattedScanResponse[key] = nestedValue;
+        }     
       }
     }
-    return formattedScanResponse;
+    else {
+      formattedScanResponse[key] = value;
+    }
   }
+  return formattedScanResponse;
+}

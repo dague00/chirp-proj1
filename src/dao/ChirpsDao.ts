@@ -3,9 +3,11 @@ import { DynamoDBClient, ScanCommand } from '@aws-sdk/client-dynamodb';
 import { PutCommand, GetCommand, QueryCommand, UpdateCommand, DeleteCommand } from "@aws-sdk/lib-dynamodb";
 import { config } from 'dotenv';
 import { formatScanResponse } from '../shared/functions';
+import { isTest, config_test } from '../shared/constants';
 config();
 
 const CHIRPS_TABLE = process.env.CHIRPS_TABLE;
+const ddb = !isTest ?  new DynamoDBClient( { region: process.env.AWS_DEFAULT_REGION } ) : new DynamoDBClient( config_test );
 
 export default class ChirpsDao{
     /**
@@ -14,7 +16,7 @@ export default class ChirpsDao{
      * @param ddb 
      * @returns 
      */
-    public async getAllChirps(ddb:DynamoDBClient){
+    public async getAllChirps(){
         const params = { TableName: CHIRPS_TABLE }
         
         try{
@@ -33,7 +35,7 @@ export default class ChirpsDao{
      * @param username 
      * @returns 
      */
-    public async getChirpsByUser(ddb:DynamoDBClient, username:string){
+    public async getChirpsByUser(username:string){
         const params = {
             TableName: CHIRPS_TABLE,
             IndexName: "username-index",
@@ -58,7 +60,7 @@ export default class ChirpsDao{
       * @param timestamp 
       * @returns 
       */
-     public async getChirp(ddb:DynamoDBClient, timestamp:string){
+     public async getChirp(timestamp:string){
         const params = {
             TableName: CHIRPS_TABLE,
             Key: { "timestamp": timestamp },
@@ -78,7 +80,7 @@ export default class ChirpsDao{
      * @param ddb 
      * @param chirp 
      */
-    public async postChirp(ddb:DynamoDBClient, chirp: {}){
+    public async postChirp(chirp: {}){
         const params = {
             TableName: CHIRPS_TABLE,
             Item: chirp,  
@@ -98,7 +100,7 @@ export default class ChirpsDao{
      * @param timestamp 
      * @param chirpBody 
      */
-    public async editChirp(ddb:DynamoDBClient, timestamp:string, chirpBody: string){
+    public async editChirp(timestamp:string, chirpBody: string){
         const params = {
             TableName: CHIRPS_TABLE,
             Key: { "timestamp": timestamp },
@@ -119,7 +121,7 @@ export default class ChirpsDao{
      * 
      * @param timestamp 
      */
-    public async deleteChirp(ddb:DynamoDBClient, timestamp: string){
+    public async deleteChirp(timestamp: string){
         const params = {
             TableName: CHIRPS_TABLE,
             Key: { "timestamp": timestamp },

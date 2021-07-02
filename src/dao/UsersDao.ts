@@ -7,9 +7,12 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import { config } from 'dotenv';
 import { formatScanResponse } from '../shared/functions';
+import { isTest, config_test } from '../shared/constants';
 config();
 
 const USERS_TABLE = process.env.USERS_TABLE;
+
+const ddb = !isTest ?  new DynamoDBClient( { region: process.env.AWS_DEFAULT_REGION } ) : new DynamoDBClient( config_test );
 
 // default usersDao class
 export default class UsersDao {
@@ -19,7 +22,7 @@ export default class UsersDao {
    * @param ddb 
    * @returns 
    */
-  public async getAllUsers(ddb:DynamoDBClient) {
+  public async getAllUsers() {
     const params = { TableName: USERS_TABLE };
 
     try {
@@ -36,7 +39,7 @@ export default class UsersDao {
    * @param username 
    * @returns 
    */
-  public async getUser(ddb:DynamoDBClient, username:string) {
+  public async getUser(username:string) {
     const params = {
       TableName: USERS_TABLE,
       Key: { username: username }
@@ -56,7 +59,7 @@ export default class UsersDao {
    * @param ddb 
    * @param user 
    */
-  public async createUser(ddb:DynamoDBClient, user: {}) {
+  public async createUser(user: {}) {
     const params = {
       TableName: USERS_TABLE,
       Item: user
@@ -77,7 +80,7 @@ export default class UsersDao {
    * @param username 
    * @param bio 
    */
-  public async updateUserBio(ddb:DynamoDBClient, username: string, bio: string) {
+  public async updateUserBio(username: string, bio: string) {
     const params = {
       TableName: USERS_TABLE,
       Key: { username: username },
@@ -99,7 +102,7 @@ export default class UsersDao {
    * @param ddb 
    * @param username 
    */
-  public async deleteUser(ddb:DynamoDBClient, username: string) {
+  public async deleteUser(username: string) {
     const params = {
       TableName: USERS_TABLE,
       Key: { username: username }

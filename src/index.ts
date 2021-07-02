@@ -45,3 +45,7 @@ if (!isTest){
     console.log('Hi! We are up and listening on port: ', PORT);
   });
 }
+else {
+  console.log('In testing mode!');
+  console.log('Change isTest in src/shared/constants to FALSE if you want to run server');
+}
