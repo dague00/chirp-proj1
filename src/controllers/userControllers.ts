@@ -2,10 +2,11 @@ import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { Request, Response } from 'express';
 import UsersDao from '../dao/UsersDao';
 import { config } from 'dotenv';
+import { config_test, isTest } from '../shared/constants';
 config();
 
 const userDao = new UsersDao();
-const ddb = new DynamoDBClient( { region: process.env.AWS_DEFAULT_REGION } );
+const ddb = !isTest ?  new DynamoDBClient( { region: process.env.AWS_DEFAULT_REGION } ) : new DynamoDBClient( config_test );
 
 /**
  * Create user controller

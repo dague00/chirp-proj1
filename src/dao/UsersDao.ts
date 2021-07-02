@@ -6,7 +6,7 @@ import {
   DeleteCommand
 } from '@aws-sdk/lib-dynamodb';
 import { config } from 'dotenv';
-import { formatScanResponse } from '../shared/constants';
+import { formatScanResponse } from '../shared/functions';
 config();
 
 const USERS_TABLE = process.env.USERS_TABLE;

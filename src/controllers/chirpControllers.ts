@@ -2,10 +2,10 @@ import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { Request, Response } from 'express';
 import ChirpsDao from '../dao/ChirpsDao';
 import { config } from 'dotenv';
-config();
+import { isTest, config_test } from '../shared/constants';
 
 const chirpDao = new ChirpsDao();
-const ddb = new DynamoDBClient( { region: process.env.AWS_DEFAULT_REGION } );
+const ddb = !isTest ?  new DynamoDBClient( { region: process.env.AWS_DEFAULT_REGION } ) : new DynamoDBClient( config_test );
 
 /**
  * Post chirp controller

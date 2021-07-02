@@ -1,107 +1,96 @@
 import supertest from 'supertest';
 import { APP } from '../src/index';
+import { DEFAULT_JEST_TIMEOUT, config_test, testUser, testChirp } from '../src/shared/constants';
 
+jest.setTimeout(DEFAULT_JEST_TIMEOUT);
+
+
+//================================================================
 // Test User Endpoint
-it('should create a user', async() => {
+//================================================================
+it('should create a user', async () => {
   const res = await supertest(APP)
     .post('/user')
-    .send({
-      username: "testUser",
-      bio: "I'm not real.",
-      password: "too weak",
-      following: []
-    });
-
+    .send(testUser);
   expect(res.statusCode).toEqual(200);
 });
 
-it('should get all users', async() => {
+it('should get all users', async () => {
   const res = await supertest(APP)
+  // supertest(APP)
     .get('/user/all')
-    .send();
-
-  expect(res.statusCode).toEqual(200);
+    .send()
+    expect(res.statusCode).toEqual(200);
 });
 
 it('should get one user', async() => {
   const res = await supertest(APP)
-    .get('/user/testUser')
+    .get('/user/' + testUser.username)
     .send();
-
   expect(res.statusCode).toEqual(200);
 });
 
 it('should update the bio', async() => {
   const res = await supertest(APP)
-    .put('/user/testUser/bio')
+    .put('/user/' + testUser.username + '/bio')
     .send({
       bio: "I'm still not real."
     });
-
   expect(res.statusCode).toEqual(200);
 });
 
 it('should delete the testuser', async () => {
   const res = await supertest(APP)
-    .delete('/user/testUser')
+    .delete('/user/' + testUser.username)
     .send();
 
   expect(res.statusCode).toEqual(200);
 });
 
+//================================================================
 // Test Chirp Endpoint
+//================================================================
 it('should create a new chirp', async () => {
   const res = await supertest(APP)
     .post('/chirp')
-    .send({
-      username: "testUser",
-      body: "this is a test chirp",
-      timestamp: "123"
-    });
-
+    .send(testChirp);
   expect(res.statusCode).toEqual(200);
 });
-
 
 it('should get all chirps', async () => {
   const res = await supertest(APP)
     .get('/chirp/all')
     .send();
-
   expect(res.statusCode).toEqual(200);
 });
 
 it('should get testUser chirps', async () => {
   const res = await supertest(APP)
-    .get('/testUser')
+    .get('/' + testChirp.username)
     .send();
-
   expect(res.statusCode).toEqual(200);
 });
 
 it('should get a specific chirps', async () => {
   const res = await supertest(APP)
-    .get('/chirp/123')
+    .get('/chirp/' + testChirp.timestamp)
     .send();
-
   expect(res.statusCode).toEqual(200);
 });
 
 it('should update a specific chirp', async () => {
   const res = await supertest(APP)
-    .put('/chirp/123')
+    .put('/chirp/' + testChirp.timestamp)
     .send({
       body: "this is a MODIFIED test chirp",
-      timestamp: "123"
+      timestamp: testChirp.timestamp
     });
-
   expect(res.statusCode).toEqual(200);
 });
 
 it('should delete a specific chirp', async() => {
   const res = await supertest(APP)
-    .delete('/chirp/123')
+    .delete('/chirp/' + testChirp.timestamp)
     .send();
-
   expect(res.statusCode).toEqual(200);
 });

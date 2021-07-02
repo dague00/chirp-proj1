@@ -1,4 +1,6 @@
 import express from 'express';
+import { isTest } from './shared/constants';
+
 import {
   getChirps,
   getUserChirps,
@@ -38,6 +40,8 @@ APP.put('/chirp/:timestamp', updateChirp);
 APP.delete('/chirp/:timestamp', deleteOneChirp);
 
 /** Begin Listening for Requests */
-APP.listen(PORT, () => {
-  console.log('Hi! We are up and listening on port: ', PORT);
-});
+if (!isTest){
+  APP.listen(PORT, () => {
+    console.log('Hi! We are up and listening on port: ', PORT);
+  });
+}

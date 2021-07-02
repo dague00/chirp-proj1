@@ -2,7 +2,7 @@
 import { DynamoDBClient, ScanCommand } from '@aws-sdk/client-dynamodb';
 import { PutCommand, GetCommand, QueryCommand, UpdateCommand, DeleteCommand } from "@aws-sdk/lib-dynamodb";
 import { config } from 'dotenv';
-import { formatScanResponse} from '../shared/constants';
+import { formatScanResponse } from '../shared/functions';
 config();
 
 const CHIRPS_TABLE = process.env.CHIRPS_TABLE;
