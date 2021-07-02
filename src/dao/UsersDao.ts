@@ -7,69 +7,78 @@ import {
   DeleteCommand
 } from '@aws-sdk/lib-dynamodb';
 import { config } from 'dotenv';
+import { convertScanResponseIntoJSON } from '../shared/constants';
 config();
 
-// const config_test = {
-//   convertEmptyValues: true,
-//   ...(process.env.MOCK_DYNAMODB_ENDPOINT && {
-//     endpoint: process.env.MOCK_DYNAMODB_ENDPOINT,
-//     sslEnabled: false,
-//     region: "local",
-//   }),
-// };
-
-
-// creates a new dynamodb client, defines users table
-const client = new DynamoDBClient({ region: process.env.AWS_DEFAULT_REGION });
-// const client = new DynamoDBClient(config_test);
 const USERS_TABLE = process.env.USERS_TABLE;
 
 // default usersDao class
 export default class UsersDao {
-  // gets all users using ScanCommand()
-  public async getAllUsers() {
+  /**
+   * gets all users using ScanCommand()
+   * 
+   * @param ddb 
+   * @returns 
+   */
+  public async getAllUsers(ddb:DynamoDBClient) {
     const params = { TableName: USERS_TABLE };
 
     try {
-      const users = await client.send(new ScanCommand(params));
-      return users.Items;
+      const users = await ddb.send(new ScanCommand(params));
+      return users.Items.map(convertScanResponseIntoJSON);
     } catch (err) {
       console.log('Error: ', err);
     }
   }
-
-  // gets one user using GetCommand()
-  public async getUser(username: string) {
+  /**
+   * gets one user using GetCommand()
+   * 
+   * @param ddb 
+   * @param username 
+   * @returns 
+   */
+  public async getUser(ddb:DynamoDBClient, username:string) {
     const params = {
       TableName: USERS_TABLE,
       Key: { username: username }
     };
 
     try {
-      const user = await client.send(new GetCommand(params));
+      const user = await ddb.send(new GetCommand(params));
       return user.Item;
     } catch (err) {
       console.log('Error: ', err);
     }
   }
 
-  // creates a user using PutCommand()
-  public async createUser(user: {}) {
+  /**
+   * creates a user using PutCommand()
+   * 
+   * @param ddb 
+   * @param user 
+   */
+  public async createUser(ddb:DynamoDBClient, user: {}) {
     const params = {
       TableName: USERS_TABLE,
       Item: user
     };
 
     try {
-      await client.send(new PutCommand(params));
+      await ddb.send(new PutCommand(params));
       console.log('User has been created.');
     } catch (err) {
       console.log('Error: ', err);
     }
   }
 
-  // updates a users bio using the UpdateCommand()
-  public async updateUserBio(username: string, bio: string) {
+  /**
+   * updates a users bio using the UpdateCommand()
+   * 
+   * @param ddb 
+   * @param username 
+   * @param bio 
+   */
+  public async updateUserBio(ddb:DynamoDBClient, username: string, bio: string) {
     const params = {
       TableName: USERS_TABLE,
       Key: { username: username },
@@ -78,21 +87,44 @@ export default class UsersDao {
     };
 
     try {
-      await client.send(new UpdateCommand(params));
+      await ddb.send(new UpdateCommand(params));
       console.log('Bio updated.');
     } catch (err) {
       console.log('Error: ', err);
     }
   }
-  // deletes a user using the DeleteCommand()
-  public async deleteUser(username: string) {
+
+  // updates a users password using the UpdateCommand()
+  // public async updateUserPassword(username: string, password: string) {
+  //   const params = {
+  //     TableName: USERS_TABLE,
+  //     Key: { username: username },
+  //     UpdateExpression: 'set password = :password',
+  //     ExpressionAttributeValues: { ':password': password }
+  //   };
+
+  //   try {
+  //     await client.send(new UpdateCommand(params));
+  //     console.log('Password updated.');
+  //   } catch (err) {
+  //     console.log('Error: ', err);
+  //   }
+  // }
+
+  /**
+   * deletes a user using the DeleteCommand()
+   * 
+   * @param ddb 
+   * @param username 
+   */
+  public async deleteUser(ddb:DynamoDBClient, username: string) {
     const params = {
       TableName: USERS_TABLE,
       Key: { username: username }
     };
 
     try {
-      await client.send(new DeleteCommand(params));
+      await ddb.send(new DeleteCommand(params));
       console.log('User deleted.');
     } catch (err) {
       console.log('Error: ', err);

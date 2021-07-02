@@ -1,63 +1,33 @@
 import ChirpsDao from '../src/dao/ChirpsDao';
+import { DynamoDBClient} from '@aws-sdk/client-dynamodb';
+import {DEFAULT_JEST_TIMEOUT, config_test, testChirp } from '../src/shared/constants';
 
-const DEFAULT_JEST_TIMEOUT = 5000; //milliseconds
-jest.setTimeout(1*DEFAULT_JEST_TIMEOUT); 
+jest.setTimeout(DEFAULT_JEST_TIMEOUT); 
 
-const dao = new ChirpsDao();
+const dao = new ChirpsDao;
+const ddb = new DynamoDBClient(config_test);
 
 it ('should enter then read items from the table', async () => {
-  await dao.postChirp ({
-    username: "testUser",
-    chirp_body: "hi",
-    timestamp: "984624684"
-  });
-
-  expect(await dao.getAllChirps ())
-    .toEqual([
-      {
-        username: { S: 'testUser' },
-        chirp_body: { S: 'hi' },
-        timestamp: { S: '984624684' }
-      }
-    ]);
+  await dao.postChirp(ddb, testChirp);
+  expect(await dao.getAllChirps(ddb))
+    .toEqual([testChirp]);
 });
 
 it ('should enter then read items from the table by user', async () => {
-  await dao.postChirp ({
-    username: "testUser",
-    chirp_body: "hi",
-    timestamp: "984624684"
-  });
-
-  expect(await dao.getChirpsByUser ('testUser'))
-    .toEqual([ { username: 'testUser', chirp_body: 'hi', timestamp: '984624684' } ]);
+  await dao.postChirp(ddb, testChirp);
+  expect(await dao.getChirpsByUser(ddb, testChirp.username))
+    .toEqual([ testChirp ]);
 });
 
 it ('should update the chirp', async () => {
-  await dao.postChirp ({
-    username: "testUser",
-    body: "hi",
-    timestamp: "984624684"
-  });
-
-  await dao.editChirp("984624684", "newChirp");
-
-  expect(await dao.getChirp('984624684'))
-    .toMatchObject({
-      username: "testUser",
-      body: "newChirp",
-      timestamp: "984624684"
-    });
+  await dao.postChirp(ddb, testChirp);
+  await dao.editChirp(ddb, testChirp.timestamp, "newChirp");
+  expect(await dao.getChirp(ddb, testChirp.timestamp))
+    .toMatchObject(testChirp);
 });
 
 it ('should delete the chirp', async() => {
-  await dao.postChirp ({
-    username: "testUser",
-    body: "hi",
-    timestamp: "984624684"
-  });
-
-  await dao.deleteChirp("984624684");
-
-  expect(await dao.getChirp('984624684')).toBeUndefined();
+  await dao.postChirp(ddb, testChirp)
+  await dao.deleteChirp(ddb, testChirp.timestamp);
+  expect(await dao.getChirp(ddb, testChirp.timestamp)).toBeUndefined();
 });
