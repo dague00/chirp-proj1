@@ -1,15 +1,3 @@
-export const config_test = {
-      convertEmptyValues: true,
-      ...(process.env.MOCK_DYNAMODB_ENDPOINT && {
-        endpoint: process.env.MOCK_DYNAMODB_ENDPOINT,
-        sslEnabled: false,
-        region: "local",
-      }),
-}
-
-
-export const DEFAULT_JEST_TIMEOUT = 5000; //milliseconds
-
 /**
  * This function conveniently reformats scan responses.
  * 
@@ -33,15 +21,35 @@ export const DEFAULT_JEST_TIMEOUT = 5000; //milliseconds
  * @param scanResponse 
  * @returns 
  */
-export function convertScanResponseIntoJSON(scanResponse: Object){
+ export function formatScanResponse(scanResponse: Object){
   let formattedScanResponse = {};
   for (const [key, value] of Object.entries(scanResponse)){
-      for (const [,nestedValue] of Object.entries(value)){
+    for (const [,nestedValue] of Object.entries(value)){
+      if (typeof nestedValue === 'object'){
+        let arr = [];
+        for (const x of nestedValue as Object[]){
+          const [y,] = Object.entries(x);
+          arr.push(y[1]);
+        }
+        formattedScanResponse[key] = arr;
+      } else {
         formattedScanResponse[key] = nestedValue;
-      }
+      }     
+    }
   }
   return formattedScanResponse;
 }
+
+export const config_test = {
+      convertEmptyValues: true,
+      ...(process.env.MOCK_DYNAMODB_ENDPOINT && {
+        endpoint: process.env.MOCK_DYNAMODB_ENDPOINT,
+        sslEnabled: false,
+        region: "local",
+      }),
+}
+
+export const DEFAULT_JEST_TIMEOUT = 5000; //milliseconds
 
 export const testChirp = {
   username: "testUser",

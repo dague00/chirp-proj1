@@ -5,7 +5,7 @@ import { config } from 'dotenv';
 config();
 
 const userDao = new UsersDao();
-const ddb = new DynamoDBClient(config);
+const ddb = new DynamoDBClient( { region: process.env.AWS_DEFAULT_REGION } );
 
 /**
  * Create user controller
@@ -15,16 +15,7 @@ const ddb = new DynamoDBClient(config);
  */
 export const createOneUser = async (req: Request, res: Response) => {
   let user = req.body;
-  // const salt = 10;
-
   res.status(200).json(await userDao.createUser(ddb, user));
-  // .then(
-    // bcrypt.hash(req.body.password, salt, async function(err, hash) {
-
-    //   res.status(200).json(await userDao.updateUserPassword(req.body.username, hash));
-    //   if (err) { console.log("Error: ", err) }
-    // })));
-
 }
 
 /**
@@ -34,8 +25,8 @@ export const createOneUser = async (req: Request, res: Response) => {
  * @param res 
  * @returns 
  */
-export async function getUser(req: Request, res: Response) {
-  const username = req.params.username;
+export const getUser = async (req: Request, res: Response) => {
+  let username = req.params.username;
   return res.status(200).json(await userDao.getUser(ddb, username));
 }
 

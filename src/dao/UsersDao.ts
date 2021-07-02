@@ -1,4 +1,3 @@
-// import dynamodb, dotenv, & bcrypt, calls dotenv config
 import { DynamoDBClient, ScanCommand } from '@aws-sdk/client-dynamodb';
 import {
   PutCommand,
@@ -7,7 +6,7 @@ import {
   DeleteCommand
 } from '@aws-sdk/lib-dynamodb';
 import { config } from 'dotenv';
-import { convertScanResponseIntoJSON } from '../shared/constants';
+import { formatScanResponse } from '../shared/constants';
 config();
 
 const USERS_TABLE = process.env.USERS_TABLE;
@@ -25,7 +24,7 @@ export default class UsersDao {
 
     try {
       const users = await ddb.send(new ScanCommand(params));
-      return users.Items.map(convertScanResponseIntoJSON);
+      return users.Items.map(formatScanResponse);
     } catch (err) {
       console.log('Error: ', err);
     }
@@ -93,23 +92,6 @@ export default class UsersDao {
       console.log('Error: ', err);
     }
   }
-
-  // updates a users password using the UpdateCommand()
-  // public async updateUserPassword(username: string, password: string) {
-  //   const params = {
-  //     TableName: USERS_TABLE,
-  //     Key: { username: username },
-  //     UpdateExpression: 'set password = :password',
-  //     ExpressionAttributeValues: { ':password': password }
-  //   };
-
-  //   try {
-  //     await client.send(new UpdateCommand(params));
-  //     console.log('Password updated.');
-  //   } catch (err) {
-  //     console.log('Error: ', err);
-  //   }
-  // }
 
   /**
    * deletes a user using the DeleteCommand()

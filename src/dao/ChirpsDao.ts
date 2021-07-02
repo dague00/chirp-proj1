@@ -2,7 +2,7 @@
 import { DynamoDBClient, ScanCommand } from '@aws-sdk/client-dynamodb';
 import { PutCommand, GetCommand, QueryCommand, UpdateCommand, DeleteCommand } from "@aws-sdk/lib-dynamodb";
 import { config } from 'dotenv';
-import { convertScanResponseIntoJSON } from '../shared/constants';
+import { formatScanResponse} from '../shared/constants';
 config();
 
 const CHIRPS_TABLE = process.env.CHIRPS_TABLE;
@@ -19,7 +19,7 @@ export default class ChirpsDao{
         
         try{
             const chirps = await ddb.send(new ScanCommand(params));
-            return chirps.Items.map(convertScanResponseIntoJSON);
+            return chirps.Items.map(formatScanResponse);
         } catch(err) {
             console.log("Error: ", err);
         }
@@ -44,7 +44,7 @@ export default class ChirpsDao{
 
         try {
             const chirps = await ddb.send(new QueryCommand(params));
-            return chirps.Items;
+            return chirps.Items.map(formatScanResponse);
         } catch (err){
             console.log("Error: ", err);
         }
