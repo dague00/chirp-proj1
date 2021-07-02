@@ -29,7 +29,7 @@ Now, we return
 }
 ```
 
-The change was implemented in an extremely simple way In the UsersDao, the function getAllUsers() has a line
+The change was implemented in an extremely simple way. In the UsersDao, the function getAllUsers() has a line
 ```
 return users.Items.map(formatScanResponse);
 ```
