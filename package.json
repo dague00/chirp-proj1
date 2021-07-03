@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --detectOpenHandles --coverage --coverageDirectory='coverage'",
+    "test": "cross-env NODE_ENV=test jest --detectOpenHandles --coverage --coverageDirectory='coverage'",
     "start": "nodemon src/index.ts",
     "dev": "nodemon src/dao/UsersDao.ts",
     "compile": "tsc -p ./"
@@ -22,6 +22,7 @@
     "@aws-sdk/util-dynamodb": "^3.19.0",
     "@types/jest": "^26.0.23",
     "bcrypt": "^5.0.1",
+    "cross-env": "^7.0.3",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "http-status-codes": "^2.1.4",

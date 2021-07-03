@@ -1,4 +1,7 @@
-export const isTest = true;
+export const isTest = process.env.NODE_ENV;
+export const emptyObj = {};
+export const emptyArr = [];
+export const DEFAULT_JEST_TIMEOUT = 5000; //milliseconds
 
 export const config_test = {
       convertEmptyValues: true,
@@ -9,17 +12,49 @@ export const config_test = {
       }),
 }
 
-export const DEFAULT_JEST_TIMEOUT = 5000; //milliseconds
+export const testUser = {
+  username: "testUsername",
+  password: "testPassword",
+  following: [
+      "username1",
+      "username2"
+  ],
+  bio: "testBio"
+}
 
-export const testChirp = {
-  username: "testUser",
-  chirp_body: "hi",
-  timestamp: "123"
+export const scanResponse_testUser = {  
+  username: {S: "testUsername"},
+  password: {S: "testPassword"},
+  following:
+      { L: [
+          {S: "username1"},
+          {S: "username2"}
+      ]},
+  bio: {S: "testBio"}
 };
 
-export const testUser = {
-    username: "testUser",
-    anythingIwant: "thisItem",
-    bio: "new bio",
-    following: []
+export const testUser_noFollowers = {
+  username: "testUsername",
+  password: "testPassword",
+  following: [],
+  bio: "testBio"
 }
+
+export const scanResponse_testUser_noFollowers = {
+  username: {S: "testUsername"},
+  password: {S: "testPassword"},
+  following: {L: []},
+  bio: {S: "testBio"}
+}
+
+export const testChirp = {
+  username: "testUsername",
+  chirp: "testChirp",
+  timestamp: "1234567890"
+}
+
+export const scanResponse_testChirp = {
+  username: {S: "testUsername"},
+  chirp: {S: "testChirp"},
+  timestamp: {S: "1234567890"}
+};

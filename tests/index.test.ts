@@ -1,6 +1,6 @@
 import supertest from 'supertest';
 import { APP } from '../src/index';
-import { DEFAULT_JEST_TIMEOUT, config_test, testUser, testChirp, isTest } from '../src/shared/constants';
+import { DEFAULT_JEST_TIMEOUT, testUser, testChirp, isTest } from '../src/shared/constants';
 
 jest.setTimeout(DEFAULT_JEST_TIMEOUT);
 

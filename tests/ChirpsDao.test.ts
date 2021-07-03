@@ -1,7 +1,7 @@
 import ChirpsDao from '../src/dao/ChirpsDao';
-import {DEFAULT_JEST_TIMEOUT, isTest, config_test, testChirp } from '../src/shared/constants';
+import {DEFAULT_JEST_TIMEOUT, config_test, testChirp, isTest } from '../src/shared/constants';
 
-jest.setTimeout(DEFAULT_JEST_TIMEOUT); 
+jest.setTimeout(DEFAULT_JEST_TIMEOUT);
 
 const dao = new ChirpsDao;
 

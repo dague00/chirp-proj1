@@ -3,11 +3,13 @@ import { DynamoDBClient, ScanCommand } from '@aws-sdk/client-dynamodb';
 import { PutCommand, GetCommand, QueryCommand, UpdateCommand, DeleteCommand } from "@aws-sdk/lib-dynamodb";
 import { config } from 'dotenv';
 import { formatScanResponse } from '../shared/functions';
-import { isTest, config_test } from '../shared/constants';
+import { config_test, isTest } from '../shared/constants';
 config();
 
 const CHIRPS_TABLE = process.env.CHIRPS_TABLE;
-const ddb = !isTest ?  new DynamoDBClient( { region: process.env.AWS_DEFAULT_REGION } ) : new DynamoDBClient( config_test );
+const ddb = !isTest ? 
+    new DynamoDBClient( { region: process.env.AWS_DEFAULT_REGION } ) :
+    new DynamoDBClient( config_test );
 
 export default class ChirpsDao{
     /**

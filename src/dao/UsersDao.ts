@@ -7,12 +7,14 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import { config } from 'dotenv';
 import { formatScanResponse } from '../shared/functions';
-import { isTest, config_test } from '../shared/constants';
+import { config_test, isTest } from '../shared/constants';
 config();
 
 const USERS_TABLE = process.env.USERS_TABLE;
 
-const ddb = !isTest ?  new DynamoDBClient( { region: process.env.AWS_DEFAULT_REGION } ) : new DynamoDBClient( config_test );
+const ddb = !isTest ?  
+  new DynamoDBClient( { region: process.env.AWS_DEFAULT_REGION } ) : 
+  new DynamoDBClient( config_test );
 
 // default usersDao class
 export default class UsersDao {

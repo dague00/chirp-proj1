@@ -1,5 +1,5 @@
 import UsersDao from '../src/dao/UsersDao';
-import {isTest, config_test, DEFAULT_JEST_TIMEOUT, testUser} from '../src/shared/constants';
+import {DEFAULT_JEST_TIMEOUT, testUser, isTest} from '../src/shared/constants';
 
 jest.setTimeout(DEFAULT_JEST_TIMEOUT); 
 
@@ -18,8 +18,14 @@ if (!isTest) {
   
   it ('should update the bio', async () => {
     await dao.createUser(testUser);
-    await dao.updateUserBio(testUser.username, 'new bio');
-    expect(await dao.getUser(testUser.username)).toMatchObject(testUser);
+    const updatedTestUser = {
+      username: testUser.username,
+      password: testUser.password,
+      bio: 'new bio',
+      following: testUser.following
+    }
+    await dao.updateUserBio(testUser.username, updatedTestUser.bio);
+    expect(await dao.getUser(testUser.username)).toMatchObject(updatedTestUser);
   });
   
   it ('delete the user', async() => {

@@ -47,5 +47,5 @@ if (!isTest){
 }
 else {
   console.log('In testing mode!');
-  console.log('Change isTest in src/shared/constants to FALSE if you want to run server');
+  console.log('If this was an accident, set isTest in src/shared/constants.ts to false!');
 }
