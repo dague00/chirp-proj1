@@ -6,7 +6,7 @@ This branch introduces a shared folder (```src/shared```). The shared folder con
 
 In shared/constants is a boolean variable ```isTest```, no longer requiring us to comment and uncomment code when testing. When running tests, set ```isTest``` to true so that the DAOs access the local database instead of the real database. Executing ```npm run test``` will return errors if this variable is not set to true. Executing ```npm run start``` with this constant set to true will return an error log to console reminding you to set the variable to false.
 
-The other major change is the use of the function formatScanResponse to format how DynamoDB returns Scans. If you try to get all Users, we USED to get an array with entries like
+The other major change is the use of the function ```formatScanResponse``` to format how DynamoDB returns Scans. If you try to get all Users, we used to get an array with entries like
 ```
 {
   "username": {"S": "exampleUserName"},
@@ -31,7 +31,7 @@ Now, we return
 }
 ```
 
-The change was implemented in an extremely simple way. In the UsersDao, the function getAllUsers() has a line
+The change was implemented in an extremely simple way. In the UsersDao, the function ```getAllUsers()``` has a line
 ```
 return users.Items.map(formatScanResponse);
 ```
