@@ -46,4 +46,4 @@ where ```formatScanResponse``` is defined in ```src/shared/functions.ts```. If y
 return users.Items;
 ```
 
-```formatScanResponse``` will return unchanged objects if the original object is formatted properly.
+It is worthwhile to note that ```formatScanResponse``` will return unchanged objects if the original object is formatted properly.
