@@ -38,7 +38,7 @@ export function formatScanResponse(scanResponse: Object){
       formattedScanResponse[key] = value;
     } else {
       //Object.entries(value) expected to have form [ [ key_, value_ ] ]
-      const [, nestedValue] = Object.entries(value)[0];
+      const nestedValue = Object.entries(value)[0][1];
       if (Array.isArray(nestedValue)){
         formattedScanResponse[key] = formatArray(nestedValue);
       } else {

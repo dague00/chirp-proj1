@@ -46,6 +46,5 @@ if (!isTest){
   });
 }
 else {
-  console.log('In testing mode!');
-  console.log('If this was an accident, set isTest in src/shared/constants.ts to false!');
+  console.log('In testing mode!\nIf this was an accident, set isTest in src/shared/constants.ts to false!');
 }

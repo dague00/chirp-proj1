@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1625325919249" clover="3.2.0">
-  <project timestamp="1625325919249" name="All files">
-    <metrics statements="169" coveredstatements="156" conditionals="21" coveredconditionals="18" methods="40" coveredmethods="39" elements="230" coveredelements="213" complexity="0" loc="169" ncloc="169" packages="4" files="7" classes="7"/>
+<coverage generated="1625329245240" clover="3.2.0">
+  <project timestamp="1625329245241" name="All files">
+    <metrics statements="168" coveredstatements="155" conditionals="21" coveredconditionals="18" methods="40" coveredmethods="39" elements="229" coveredelements="212" complexity="0" loc="168" ncloc="168" packages="4" files="7" classes="7"/>
     <package name="src">
-      <metrics statements="24" coveredstatements="22" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="0"/>
+      <metrics statements="23" coveredstatements="21" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="0"/>
       <file name="index.ts" path="C:\Users\Bigmo\Revature\chirp-proj1-jest-testing-v2\src\index.ts">
-        <metrics statements="24" coveredstatements="22" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="0"/>
+        <metrics statements="23" coveredstatements="21" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
@@ -29,7 +29,6 @@
         <line num="44" count="0" type="stmt"/>
         <line num="45" count="0" type="stmt"/>
         <line num="49" count="1" type="stmt"/>
-        <line num="50" count="1" type="stmt"/>
       </file>
     </package>
     <package name="src.controllers">
