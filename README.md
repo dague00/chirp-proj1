@@ -1,6 +1,6 @@
 # chirp-proj1
 
-We now no longer have to change the code to run tests! You can execute ```npm start``` or ```npm test``` one after another without changing the code! I am so HAPPY this works! I had to install a node module called cross-env. This module lets you create environment variables from the scripts in package.json. Now, our scripts look like
+We now no longer have to change the code to run tests! You can execute ```npm start``` or ```npm test``` one after another without changing the code! I am so HAPPY this works! I had to install a node module called ```cross-env```. This module lets you create environment variables from the scripts in ```package.json```. Now, our scripts look like
 ```
 "scripts": {
     "test": "cross-env NODE_ENV=test jest --detectOpenHandles --coverage --coverageDirectory='coverage'",
