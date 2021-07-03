@@ -37,14 +37,14 @@ if (!isTest){
     //==========================================================================
     //test formatScanResponse()
     //==========================================================================
-    it('formatScanResponse: it should put an array with two entries and return an array formatted properly', async () => {
+    it('formatScanResponse: an array with two entries returns as formatted array', async () => {
         const scanArray = [scanResponse_testUser, scanResponse_testUser_noFollowers];
         const formattedScanArray = [testUser, testUser_noFollowers];
         const attemptToFormatArray = scanArray.map(formatScanResponse);
         expect(attemptToFormatArray).toStrictEqual(formattedScanArray);
     });
-    it('formatScanResponse: it should return an empty array as itself', () => {
-        expect([].map(formatScanResponse)).toStrictEqual([]);
+    it('formatScanResponse: it should return an empty array', () => {
+        expect(emptyArr.map(formatScanResponse)).toStrictEqual(emptyArr);
     });
     it('formatScanResponse: it should leave properly formatted entries alone', () => {
         const scanArray = [testUser_noFollowers];
@@ -52,15 +52,15 @@ if (!isTest){
         const attemptToFormatArray = scanArray.map(formatScanResponse);
         expect(attemptToFormatArray).toStrictEqual(formattedScanArray);
     });
-    it('formatScanResponse: it should leave properly formatted entries (not containing empty arrays) alone', () => {
+    it('formatScanResponse: it should leave properly formatted entries alone (not containing empty arrays) alone', () => {
         const scanArray = [testUser, testUser, testUser];
         const formattedScanArray = scanArray;
         const attemptToFormatArray = scanArray.map(formatScanResponse);
         expect(attemptToFormatArray).toStrictEqual(formattedScanArray);
     });
     it('formatScanResponse: it should properly handle chirps', () => {
-        const scanArray = [testChirp, testChirp, testChirp];
-        const formattedScanArray = scanArray;
+        const scanArray = [scanResponse_testChirp, testChirp, testChirp];
+        const formattedScanArray = [testChirp, testChirp, testChirp];
         const attemptToFormatArray = scanArray.map(formatScanResponse);
         expect(attemptToFormatArray).toStrictEqual(formattedScanArray);
     });

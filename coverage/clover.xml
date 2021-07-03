@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1625280157852" clover="3.2.0">
-  <project timestamp="1625280157852" name="All files">
+<coverage generated="1625325421173" clover="3.2.0">
+  <project timestamp="1625325421173" name="All files">
     <metrics statements="171" coveredstatements="158" conditionals="23" coveredconditionals="20" methods="40" coveredmethods="39" elements="234" coveredelements="217" complexity="0" loc="171" ncloc="171" packages="4" files="7" classes="7"/>
     <package name="src">
       <metrics statements="24" coveredstatements="22" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="0"/>
@@ -180,30 +180,30 @@
       </file>
       <file name="functions.ts" path="C:\Users\Bigmo\Revature\chirp-proj1-jest-testing-v2\src\shared\functions.ts">
         <metrics statements="24" coveredstatements="24" conditionals="15" coveredconditionals="15" methods="6" coveredmethods="6"/>
-        <line num="29" count="4" type="stmt"/>
-        <line num="30" count="12" type="stmt"/>
-        <line num="31" count="12" type="stmt"/>
-        <line num="32" count="43" type="cond" truecount="5" falsecount="0"/>
-        <line num="33" count="28" type="stmt"/>
-        <line num="35" count="15" type="stmt"/>
-        <line num="36" count="15" type="cond" truecount="2" falsecount="0"/>
-        <line num="37" count="3" type="stmt"/>
-        <line num="39" count="12" type="stmt"/>
-        <line num="44" count="12" type="stmt"/>
-        <line num="53" count="4" type="stmt"/>
-        <line num="54" count="42" type="stmt"/>
-        <line num="64" count="18" type="stmt"/>
-        <line num="66" count="18" type="cond" truecount="2" falsecount="0"/>
-        <line num="67" count="18" type="cond" truecount="2" falsecount="0"/>
-        <line num="76" count="4" type="stmt"/>
-        <line num="77" count="43" type="cond" truecount="2" falsecount="0"/>
-        <line num="96" count="4" type="stmt"/>
-        <line num="97" count="7" type="stmt"/>
-        <line num="98" count="7" type="stmt"/>
-        <line num="99" count="11" type="cond" truecount="2" falsecount="0"/>
-        <line num="100" count="3" type="stmt"/>
-        <line num="103" count="8" type="stmt"/>
-        <line num="106" count="7" type="stmt"/>
+        <line num="34" count="4" type="stmt"/>
+        <line num="35" count="12" type="stmt"/>
+        <line num="36" count="12" type="stmt"/>
+        <line num="37" count="43" type="cond" truecount="5" falsecount="0"/>
+        <line num="38" count="25" type="stmt"/>
+        <line num="40" count="18" type="stmt"/>
+        <line num="41" count="18" type="cond" truecount="2" falsecount="0"/>
+        <line num="42" count="3" type="stmt"/>
+        <line num="44" count="15" type="stmt"/>
+        <line num="48" count="12" type="stmt"/>
+        <line num="57" count="4" type="stmt"/>
+        <line num="58" count="59" type="stmt"/>
+        <line num="68" count="21" type="stmt"/>
+        <line num="70" count="21" type="cond" truecount="2" falsecount="0"/>
+        <line num="71" count="21" type="cond" truecount="2" falsecount="0"/>
+        <line num="80" count="4" type="stmt"/>
+        <line num="81" count="43" type="cond" truecount="2" falsecount="0"/>
+        <line num="103" count="4" type="stmt"/>
+        <line num="104" count="7" type="stmt"/>
+        <line num="105" count="7" type="stmt"/>
+        <line num="106" count="11" type="cond" truecount="2" falsecount="0"/>
+        <line num="107" count="3" type="stmt"/>
+        <line num="110" count="8" type="stmt"/>
+        <line num="113" count="7" type="stmt"/>
       </file>
     </package>
   </project>

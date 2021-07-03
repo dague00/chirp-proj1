@@ -1,5 +1,6 @@
 /**
  * DynamoDB scan responses have the unweildy form
+ * 
  * ```
  * {  key0: { type0: val0 },
  *    key1: { type1: val1 },
@@ -9,14 +10,18 @@
  *    ], //etc 
  * }
  * ```
+ * 
  * This function takes an object of that form as its argument and returns
+ * 
  * ```
  * {  key0: val0,
  *    key1: val1,
  *    key2: [arr0_val, arr1_val] //etc
  * }
  * ```
+ * 
  * ```formatScanResponse``` is typically used in the following manner:
+ * 
  * ```
  * ddb = new DynamoDBClient(config);
  * const scan = await ddb.send(new ScanCommand(params));
@@ -32,12 +37,11 @@ export function formatScanResponse(scanResponse: Object){
     if ( isEmptyArr(value) || isPrimitive(value) || isArrayOfPrimitives(value)){
       formattedScanResponse[key] = value;
     } else {
-      for (const [,nestedValue] of Object.entries(value)){
-        if (Array.isArray(nestedValue)){
-          formattedScanResponse[key] = formatArray(nestedValue);
-        } else {
-          formattedScanResponse[key] = nestedValue;
-        }
+      const [, nestedValue] = Object.entries(value)[0];
+      if (Array.isArray(nestedValue)){
+        formattedScanResponse[key] = formatArray(nestedValue);
+      } else {
+        formattedScanResponse[key] = nestedValue;
       }
     }  
   }
@@ -63,7 +67,7 @@ export function isPrimitive(value){
 function isArrayOfPrimitives(arr) {
   const isArray = Array.isArray(arr);
   //Guard elementsArePrimitive, since every() will throw error on nonarray types
-  const elementsArePrimitive = isArray && arr.every(i => (typeof i !== "object"))
+  const elementsArePrimitive = isArray && arr.every(i => isPrimitive(i));
   return isArray && elementsArePrimitive;
 }
 
@@ -79,13 +83,16 @@ export function isEmptyArr(arr){
 
 /**
  * Parameter is array of form
+ * 
  * ``` 
  * [
  *  {type0: val0},
  *  {type1: val1}, ...
  * ]
  * ```
+ * 
  * Return is array of form
+ * 
  * ```
  *  [val0, val1, ...]
  * ```
@@ -96,7 +103,7 @@ export function isEmptyArr(arr){
 export function formatArray(arr) {
   let formattedArr = [];
   for (const x of arr){
-    if (typeof x !== 'object'){
+    if ( isPrimitive(x) ){
       formattedArr.push(x); //if element is already formatted
     } else {
     //Object.entries(x) has the form [ [ type, value ] ] 

@@ -163,7 +163,19 @@
 <a name='L104'></a><a href='#L104'>104</a>
 <a name='L105'></a><a href='#L105'>105</a>
 <a name='L106'></a><a href='#L106'>106</a>
-<a name='L107'></a><a href='#L107'>107</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L107'></a><a href='#L107'>107</a>
+<a name='L108'></a><a href='#L108'>108</a>
+<a name='L109'></a><a href='#L109'>109</a>
+<a name='L110'></a><a href='#L110'>110</a>
+<a name='L111'></a><a href='#L111'>111</a>
+<a name='L112'></a><a href='#L112'>112</a>
+<a name='L113'></a><a href='#L113'>113</a>
+<a name='L114'></a><a href='#L114'>114</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -195,14 +207,13 @@
 <span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-yes">43x</span>
-<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-yes">25x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-yes">18x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -216,7 +227,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">42x</span>
+<span class="cline-any cline-yes">59x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -226,10 +237,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-yes">21x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">18x</span>
-<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-yes">21x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -240,6 +251,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">43x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -271,6 +285,7 @@
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * DynamoDB scan responses have the unweildy form
+ * 
  * ```
  * {  key0: { type0: val0 },
  *    key1: { type1: val1 },
@@ -280,14 +295,18 @@
  *    ], //etc 
  * }
  * ```
+ * 
  * This function takes an object of that form as its argument and returns
+ * 
  * ```
  * {  key0: val0,
  *    key1: val1,
  *    key2: [arr0_val, arr1_val] //etc
  * }
  * ```
+ * 
  * ```formatScanResponse``` is typically used in the following manner:
+ * 
  * ```
  * ddb = new DynamoDBClient(config);
  * const scan = await ddb.send(new ScanCommand(params));
@@ -303,12 +322,11 @@ export function formatScanResponse(scanResponse: Object){
     if ( isEmptyArr(value) || isPrimitive(value) || isArrayOfPrimitives(value)){
       formattedScanResponse[key] = value;
     } else {
-      for (const [,nestedValue] of Object.entries(value)){
-        if (Array.isArray(nestedValue)){
-          formattedScanResponse[key] = formatArray(nestedValue);
-        } else {
-          formattedScanResponse[key] = nestedValue;
-        }
+      const [, nestedValue] = Object.entries(value)[0];
+      if (Array.isArray(nestedValue)){
+        formattedScanResponse[key] = formatArray(nestedValue);
+      } else {
+        formattedScanResponse[key] = nestedValue;
       }
     }  
   }
@@ -334,7 +352,7 @@ export function isPrimitive(value){
 function isArrayOfPrimitives(arr) {
   const isArray = Array.isArray(arr);
   //Guard elementsArePrimitive, since every() will throw error on nonarray types
-  const elementsArePrimitive = isArray &amp;&amp; arr.every(i =&gt; (typeof i !== "object"))
+  const elementsArePrimitive = isArray &amp;&amp; arr.every(i =&gt; isPrimitive(i));
   return isArray &amp;&amp; elementsArePrimitive;
 }
 &nbsp;
@@ -350,13 +368,16 @@ export function isEmptyArr(arr){
 &nbsp;
 /**
  * Parameter is array of form
+ * 
  * ``` 
  * [
  *  {type0: val0},
  *  {type1: val1}, ...
  * ]
  * ```
+ * 
  * Return is array of form
+ * 
  * ```
  *  [val0, val1, ...]
  * ```
@@ -367,7 +388,7 @@ export function isEmptyArr(arr){
 export function formatArray(arr) {
   let formattedArr = [];
   for (const x of arr){
-    if (typeof x !== 'object'){
+    if ( isPrimitive(x) ){
       formattedArr.push(x); //if element is already formatted
     } else {
     //Object.entries(x) has the form [ [ type, value ] ] 
@@ -382,7 +403,7 @@ export function formatArray(arr) {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Fri Jul 02 2021 22:42:37 GMT-0400 (Eastern Daylight Time)
+                at Sat Jul 03 2021 11:17:01 GMT-0400 (Eastern Daylight Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>
