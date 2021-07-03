@@ -37,6 +37,7 @@ export function formatScanResponse(scanResponse: Object){
     if ( isEmptyArr(value) || isPrimitive(value) || isArrayOfPrimitives(value)){
       formattedScanResponse[key] = value;
     } else {
+      //Object.entries(value) expected to have form [ [ key_, value_ ] ]
       const [, nestedValue] = Object.entries(value)[0];
       if (Array.isArray(nestedValue)){
         formattedScanResponse[key] = formatArray(nestedValue);
@@ -65,10 +66,7 @@ export function isPrimitive(value){
  * @returns 
  */
 function isArrayOfPrimitives(arr) {
-  const isArray = Array.isArray(arr);
-  //Guard elementsArePrimitive, since every() will throw error on nonarray types
-  const elementsArePrimitive = isArray && arr.every(i => isPrimitive(i));
-  return isArray && elementsArePrimitive;
+  return Array.isArray(arr) && arr.every(i => isPrimitive(i));
 }
 
 /**
@@ -106,7 +104,7 @@ export function formatArray(arr) {
     if ( isPrimitive(x) ){
       formattedArr.push(x); //if element is already formatted
     } else {
-    //Object.entries(x) has the form [ [ type, value ] ] 
+    //Object.entries(x) expected to have form [ [ type, value ] ] 
     formattedArr.push(Object.entries(x)[0][1]);
     }
   }
