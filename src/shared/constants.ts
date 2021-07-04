@@ -1,4 +1,4 @@
-export const isTest = process.env.NODE_ENV;
+export const isTest = process.env.NODE_ENV === 'test';
 export const emptyObj = {};
 export const emptyArr = [];
 export const DEFAULT_JEST_TIMEOUT = 5000; //milliseconds

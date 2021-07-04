@@ -22,9 +22,9 @@ if (!isTest){
     });
     it('formatArray: A properly formatted array should return itself', () => {
         const arr = testUser.following;
-        expect(formatArray(arr)).toStrictEqual(testUser.following);
+        expect(formatArray(arr)).toStrictEqual(arr);
     });
-    it('formatArray: An unformatted array should return an formatted array', () => {
+    it('formatArray: An unformatted array should return a formatted array', () => {
         const arr = scanResponse_testUser.following.L;
         expect(formatArray(arr)).toStrictEqual(testUser.following);
     });

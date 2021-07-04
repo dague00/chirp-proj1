@@ -37,7 +37,7 @@ export function formatScanResponse(scanResponse: Object){
     if ( isEmptyArr(value) || isPrimitive(value) || isArrayOfPrimitives(value)){
       formattedScanResponse[key] = value;
     } else {
-      //Object.entries(value) expected to have form [ [ key_, value_ ] ]
+      //Object.entries(value) expected to have form [ [type, val ] ]
       const nestedValue = Object.entries(value)[0][1];
       if (Array.isArray(nestedValue)){
         formattedScanResponse[key] = formatArray(nestedValue);
@@ -104,7 +104,7 @@ export function formatArray(arr) {
     if ( isPrimitive(x) ){
       formattedArr.push(x); //if element is already formatted
     } else {
-    //Object.entries(x) expected to have form [ [ type, value ] ] 
+    //Object.entries(x) expected to have form [ [ arr_type, arr_val ] ] 
     formattedArr.push(Object.entries(x)[0][1]);
     }
   }

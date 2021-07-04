@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test jest --detectOpenHandles --coverage --coverageDirectory='coverage'",
-    "start": "nodemon src/index.ts",
+    "start": "cross-env NODE_ENV=build nodemon src/index.ts",
     "dev": "nodemon src/dao/UsersDao.ts",
     "compile": "tsc -p ./"
   },
