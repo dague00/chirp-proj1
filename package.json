@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "start": "nodemon src/index.ts",
-    "dev": "nodemon src/dao/UsersDao.ts",
+    "dev": "nodemon src/dao/ChirpsDao.ts",
     "compile": "tsc -p ./"
   },
   "repository": {
@@ -37,7 +37,9 @@
   },
   "jest": {
     "testEnvironment": "node",
-    "coveragePathIgnorePatterns": [ "/node_modules/" ]
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
   },
   "bugs": {
     "url": "https://github.com/dague00/chirp-proj1/issues"
