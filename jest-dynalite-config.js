@@ -42,6 +42,5 @@ module.exports = {
       },
     }
   ],
-
   basePort: 8000,
 };

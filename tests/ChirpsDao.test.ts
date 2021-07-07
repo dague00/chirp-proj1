@@ -1,63 +1,37 @@
 import ChirpsDao from '../src/dao/ChirpsDao';
+import {DEFAULT_JEST_TIMEOUT, config_test, testChirp, isTest } from '../src/shared/constants';
 
-const DEFAULT_JEST_TIMEOUT = 5000; //milliseconds
-jest.setTimeout(1*DEFAULT_JEST_TIMEOUT); 
+jest.setTimeout(DEFAULT_JEST_TIMEOUT);
 
-const dao = new ChirpsDao();
+const dao = new ChirpsDao;
 
-it ('should enter then read items from the table', async () => {
-  await dao.postChirp ({
-    username: "testUser",
-    chirp_body: "hi",
-    timestamp: "984624684"
+if (!isTest) {
+  it('To run actual tests, isTest in src/shared/constants should be set to true', () => {
+    expect(isTest).toBe(true);
   });
-
-  expect(await dao.getAllChirps ())
-    .toEqual([
-      {
-        username: { S: 'testUser' },
-        chirp_body: { S: 'hi' },
-        timestamp: { S: '984624684' }
-      }
-    ]);
-});
-
-it ('should enter then read items from the table by user', async () => {
-  await dao.postChirp ({
-    username: "testUser",
-    chirp_body: "hi",
-    timestamp: "984624684"
+} else {
+  it ('should enter then read items from the table', async () => {
+    await dao.postChirp(testChirp);
+    expect(await dao.getAllChirps())
+      .toEqual([testChirp]);
   });
-
-  expect(await dao.getChirpsByUser ('testUser'))
-    .toEqual([ { username: 'testUser', chirp_body: 'hi', timestamp: '984624684' } ]);
-});
-
-it ('should update the chirp', async () => {
-  await dao.postChirp ({
-    username: "testUser",
-    body: "hi",
-    timestamp: "984624684"
+  
+  it ('should enter then read items from the table by user', async () => {
+    await dao.postChirp(testChirp);
+    expect(await dao.getChirpsByUser(testChirp.username))
+      .toEqual([ testChirp ]);
   });
-
-  await dao.editChirp("984624684", "newChirp");
-
-  expect(await dao.getChirp('984624684'))
-    .toMatchObject({
-      username: "testUser",
-      body: "newChirp",
-      timestamp: "984624684"
-    });
-});
-
-it ('should delete the chirp', async() => {
-  await dao.postChirp ({
-    username: "testUser",
-    body: "hi",
-    timestamp: "984624684"
+  
+  it ('should update the chirp', async () => {
+    await dao.postChirp(testChirp);
+    await dao.editChirp(testChirp.timestamp, "newChirp");
+    expect(await dao.getChirp(testChirp.timestamp))
+      .toMatchObject(testChirp);
   });
-
-  await dao.deleteChirp("984624684");
-
-  expect(await dao.getChirp('984624684')).toBeUndefined();
-});
+  
+  it ('should delete the chirp', async() => {
+    await dao.postChirp(testChirp)
+    await dao.deleteChirp(testChirp.timestamp);
+    expect(await dao.getChirp(testChirp.timestamp)).toBeUndefined();
+  });
+}

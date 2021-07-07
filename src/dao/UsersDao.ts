@@ -1,4 +1,3 @@
-// import dynamodb, dotenv, & bcrypt, calls dotenv config
 import { DynamoDBClient, ScanCommand } from '@aws-sdk/client-dynamodb';
 import {
   PutCommand,
@@ -7,53 +6,61 @@ import {
   DeleteCommand
 } from '@aws-sdk/lib-dynamodb';
 import { config } from 'dotenv';
+import { formatScanResponse } from '../shared/functions';
+import { config_test, isTest } from '../shared/constants';
 config();
 
-// const config_test = {
-//   convertEmptyValues: true,
-//   ...(process.env.MOCK_DYNAMODB_ENDPOINT && {
-//     endpoint: process.env.MOCK_DYNAMODB_ENDPOINT,
-//     sslEnabled: false,
-//     region: "local",
-//   }),
-// };
-
-
-// creates a new dynamodb client, defines users table
-const client = new DynamoDBClient({ region: process.env.AWS_DEFAULT_REGION });
-// const client = new DynamoDBClient(config_test);
 const USERS_TABLE = process.env.USERS_TABLE;
+
+const ddb = !isTest ?  
+  new DynamoDBClient( { region: process.env.AWS_DEFAULT_REGION } ) : 
+  new DynamoDBClient( config_test );
 
 // default usersDao class
 export default class UsersDao {
-  // gets all users using ScanCommand()
+  /**
+   * gets all users using ScanCommand()
+   * 
+   * @param ddb 
+   * @returns 
+   */
   public async getAllUsers() {
     const params = { TableName: USERS_TABLE };
 
     try {
-      const users = await client.send(new ScanCommand(params));
-      return users.Items;
+      const users = await ddb.send(new ScanCommand(params));
+      return users.Items.map(formatScanResponse);
     } catch (err) {
       console.log('Error: ', err);
     }
   }
-
-  // gets one user using GetCommand()
-  public async getUser(username: string) {
+  /**
+   * gets one user using GetCommand()
+   * 
+   * @param ddb 
+   * @param username 
+   * @returns 
+   */
+  public async getUser(username:string) {
     const params = {
       TableName: USERS_TABLE,
       Key: { username: username }
     };
 
     try {
-      const user = await client.send(new GetCommand(params));
+      const user = await ddb.send(new GetCommand(params));
       return user.Item;
     } catch (err) {
       console.log('Error: ', err);
     }
   }
 
-  // creates a user using PutCommand()
+  /**
+   * creates a user using PutCommand()
+   * 
+   * @param ddb 
+   * @param user 
+   */
   public async createUser(user: {}) {
     const params = {
       TableName: USERS_TABLE,
@@ -61,14 +68,20 @@ export default class UsersDao {
     };
 
     try {
-      await client.send(new PutCommand(params));
+      await ddb.send(new PutCommand(params));
       console.log('User has been created.');
     } catch (err) {
       console.log('Error: ', err);
     }
   }
 
-  // updates a users bio using the UpdateCommand()
+  /**
+   * updates a users bio using the UpdateCommand()
+   * 
+   * @param ddb 
+   * @param username 
+   * @param bio 
+   */
   public async updateUserBio(username: string, bio: string) {
     const params = {
       TableName: USERS_TABLE,
@@ -78,13 +91,19 @@ export default class UsersDao {
     };
 
     try {
-      await client.send(new UpdateCommand(params));
+      await ddb.send(new UpdateCommand(params));
       console.log('Bio updated.');
     } catch (err) {
       console.log('Error: ', err);
     }
   }
-  // deletes a user using the DeleteCommand()
+
+  /**
+   * deletes a user using the DeleteCommand()
+   * 
+   * @param ddb 
+   * @param username 
+   */
   public async deleteUser(username: string) {
     const params = {
       TableName: USERS_TABLE,
@@ -92,7 +111,7 @@ export default class UsersDao {
     };
 
     try {
-      await client.send(new DeleteCommand(params));
+      await ddb.send(new DeleteCommand(params));
       console.log('User deleted.');
     } catch (err) {
       console.log('Error: ', err);
