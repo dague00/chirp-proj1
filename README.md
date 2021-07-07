@@ -4,7 +4,7 @@ We now no longer have to change the code to run tests! You can execute ```npm st
 ```
 "scripts": {
     "test": "cross-env NODE_ENV=test jest --detectOpenHandles --coverage --coverageDirectory='coverage'",
-    "start": "nodemon src/index.ts",
+    "start": "cross-env NODE_ENV=build nodemon src/index.ts",
 ```
 This change creates an environment variable you can access with ```process.env.NODE_ENV```. and it is now assigned to the ```isTest``` variable in ```src/shared/constants.ts``` (see below).
 
