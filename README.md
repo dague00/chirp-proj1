@@ -6,7 +6,7 @@ We now no longer have to change the code to run tests! You can execute ```npm st
     "test": "cross-env NODE_ENV=test jest --detectOpenHandles --coverage --coverageDirectory='coverage'",
     "start": "cross-env NODE_ENV=build nodemon src/index.ts",
 ```
-This change creates an environment variable you can access with ```process.env.NODE_ENV```. and it is now assigned to the ```isTest``` variable in ```src/shared/constants.ts``` (see below).
+This change creates an environment variable you can access with ```process.env.NODE_ENV```. and it is now determine the value of the ```isTest``` variable in ```src/shared/constants.ts``` (see below).
 
 This branch introduces a shared folder (```src/shared```). The shared folder contains some code that we reused all over the place in one convenient location. It also contains a function (in ```shared/functions.ts```) which will be described later. Go see ```tests/UsersDao.test.ts``` to see how this cleans up the code.
 
