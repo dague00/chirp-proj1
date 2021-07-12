@@ -13,25 +13,39 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const client_dynamodb_1 = require("@aws-sdk/client-dynamodb");
 const lib_dynamodb_1 = require("@aws-sdk/lib-dynamodb");
 const dotenv_1 = require("dotenv");
+const functions_1 = require("../shared/functions");
+const constants_1 = require("../shared/constants");
 dotenv_1.config();
-// creates a new dynamodb client, defines users table
-const client = new client_dynamodb_1.DynamoDBClient({ region: process.env.AWS_DEFAULT_REGION });
 const CHIRPS_TABLE = process.env.CHIRPS_TABLE;
-class ChripsDao {
-    // gets all chirps using ScanCommand()
+const ddb = !constants_1.isTest ?
+    new client_dynamodb_1.DynamoDBClient({ region: process.env.AWS_DEFAULT_REGION }) :
+    new client_dynamodb_1.DynamoDBClient(constants_1.config_test);
+class ChirpsDao {
+    /**
+     *gets all chirps using ScanCommand()
+     *
+     * @param ddb
+     * @returns
+     */
     getAllChirps() {
         return __awaiter(this, void 0, void 0, function* () {
             const params = { TableName: CHIRPS_TABLE };
             try {
-                const chirps = yield client.send(new client_dynamodb_1.ScanCommand(params));
-                return chirps.Items;
+                const chirps = yield ddb.send(new client_dynamodb_1.ScanCommand(params));
+                return chirps.Items.map(functions_1.formatScanResponse);
             }
             catch (err) {
                 console.log("Error: ", err);
             }
         });
     }
-    // gets all chirps by one user using QueryCommand()
+    /**
+     * gets all chirps by one user using QueryCommand()
+     *
+     * @param ddb
+     * @param username
+     * @returns
+     */
     getChirpsByUser(username) {
         return __awaiter(this, void 0, void 0, function* () {
             const params = {
@@ -42,15 +56,21 @@ class ChripsDao {
                 KeyConditionExpression: "username = :username"
             };
             try {
-                const chirps = yield client.send(new lib_dynamodb_1.QueryCommand(params));
-                return chirps.Items;
+                const chirps = yield ddb.send(new lib_dynamodb_1.QueryCommand(params));
+                return chirps.Items.map(functions_1.formatScanResponse);
             }
             catch (err) {
                 console.log("Error: ", err);
             }
         });
     }
-    // gets one chirp using GetCommand()
+    /**
+     * gets one chirp using GetCommand()
+     *
+     * @param ddb
+     * @param timestamp
+     * @returns
+     */
     getChirp(timestamp) {
         return __awaiter(this, void 0, void 0, function* () {
             const params = {
@@ -58,7 +78,7 @@ class ChripsDao {
                 Key: { "timestamp": timestamp },
             };
             try {
-                const chirp = yield client.send(new lib_dynamodb_1.GetCommand(params));
+                const chirp = yield ddb.send(new lib_dynamodb_1.GetCommand(params));
                 return chirp.Item;
             }
             catch (err) {
@@ -66,7 +86,12 @@ class ChripsDao {
             }
         });
     }
-    // creates a new chirp using PutCommand()
+    /**
+     * creates a new chirp using PutCommand()
+     *
+     * @param ddb
+     * @param chirp
+     */
     postChirp(chirp) {
         return __awaiter(this, void 0, void 0, function* () {
             const params = {
@@ -74,7 +99,7 @@ class ChripsDao {
                 Item: chirp,
             };
             try {
-                yield client.send(new lib_dynamodb_1.PutCommand(params));
+                yield ddb.send(new lib_dynamodb_1.PutCommand(params));
                 console.log("Chirp has been posted.");
             }
             catch (err) {
@@ -82,7 +107,12 @@ class ChripsDao {
             }
         });
     }
-    // updates a chirp's body using UpdateCommand()
+    /**
+     * updates a chirp's body using UpdateCommand()
+     *
+     * @param timestamp
+     * @param chirpBody
+     */
     editChirp(timestamp, chirpBody) {
         return __awaiter(this, void 0, void 0, function* () {
             const params = {
@@ -92,7 +122,7 @@ class ChripsDao {
                 ExpressionAttributeValues: { ":body": chirpBody }
             };
             try {
-                yield client.send(new lib_dynamodb_1.UpdateCommand(params));
+                yield ddb.send(new lib_dynamodb_1.UpdateCommand(params));
                 console.log("Chirp updated.");
             }
             catch (err) {
@@ -100,7 +130,11 @@ class ChripsDao {
             }
         });
     }
-    // deletes a user using the DeleteCommand()
+    /**
+     * deletes a user using the DeleteCommand()
+     *
+     * @param timestamp
+     */
     deleteChirp(timestamp) {
         return __awaiter(this, void 0, void 0, function* () {
             const params = {
@@ -108,7 +142,7 @@ class ChripsDao {
                 Key: { "timestamp": timestamp },
             };
             try {
-                yield client.send(new lib_dynamodb_1.DeleteCommand(params));
+                yield ddb.send(new lib_dynamodb_1.DeleteCommand(params));
                 console.log("Chirp deleted.");
             }
             catch (err) {
@@ -117,4 +151,4 @@ class ChripsDao {
         });
     }
 }
-exports.default = ChripsDao;
+exports.default = ChirpsDao;

@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import { isTest } from './shared/constants';
 
 import {
@@ -23,6 +24,7 @@ export const APP = express();
 /** Set up Express Router */
 APP.use(express.json());
 APP.use(express.urlencoded({ extended: true }));
+APP.use(cors());
 
 /** Set up Users Endpoint */
 APP.get('/user/all', getAllUsers);
