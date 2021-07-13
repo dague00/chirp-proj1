@@ -2,36 +2,41 @@
 import { DynamoDBClient, ScanCommand } from '@aws-sdk/client-dynamodb';
 import { PutCommand, GetCommand, QueryCommand, UpdateCommand, DeleteCommand } from "@aws-sdk/lib-dynamodb";
 import { config } from 'dotenv';
+import { formatScanResponse } from '../shared/functions';
+import { config_test, isTest } from '../shared/constants';
 config();
 
-// const config_test = {
-//     convertEmptyValues: true,
-//     ...(process.env.MOCK_DYNAMODB_ENDPOINT && {
-//       endpoint: process.env.MOCK_DYNAMODB_ENDPOINT,
-//       sslEnabled: false,
-//       region: "local",
-//     }),
-//   };
-
-// creates a new dynamodb client, defines users table
-const client = new DynamoDBClient({ region: process.env.AWS_DEFAULT_REGION });
-// const client = new DynamoDBClient(config_test);
 const CHIRPS_TABLE = process.env.CHIRPS_TABLE;
+const ddb = !isTest ? 
+    new DynamoDBClient( { region: process.env.AWS_DEFAULT_REGION } ) :
+    new DynamoDBClient( config_test );
 
-export default class ChripsDao{
-    // gets all chirps using ScanCommand()
+export default class ChirpsDao{
+    /**
+     *gets all chirps using ScanCommand()
+     * 
+     * @param ddb 
+     * @returns 
+     */
     public async getAllChirps(){
         const params = { TableName: CHIRPS_TABLE }
         
         try{
-            const chirps = await client.send(new ScanCommand(params));
-            return chirps.Items;
+            const chirps = await ddb.send(new ScanCommand(params));
+            return chirps.Items.map(formatScanResponse);
         } catch(err) {
             console.log("Error: ", err);
         }
     }
 
-    // gets all chirps by one user using QueryCommand()
+    
+    /**
+     * gets all chirps by one user using QueryCommand()
+     * 
+     * @param ddb 
+     * @param username 
+     * @returns 
+     */
     public async getChirpsByUser(username:string){
         const params = {
             TableName: CHIRPS_TABLE,
@@ -42,14 +47,21 @@ export default class ChripsDao{
         }
 
         try {
-            const chirps = await client.send(new QueryCommand(params));
-            return chirps.Items;
+            const chirps = await ddb.send(new QueryCommand(params));
+            return chirps.Items.map(formatScanResponse);
         } catch (err){
             console.log("Error: ", err);
         }
     }
 
-     // gets one chirp using GetCommand()
+
+     /**
+      * gets one chirp using GetCommand()
+      * 
+      * @param ddb 
+      * @param timestamp 
+      * @returns 
+      */
      public async getChirp(timestamp:string){
         const params = {
             TableName: CHIRPS_TABLE,
@@ -57,14 +69,19 @@ export default class ChripsDao{
         }
 
         try{
-        const chirp = await client.send(new GetCommand(params));
+        const chirp = await ddb.send(new GetCommand(params));
         return chirp.Item;
         } catch (err){
             console.log("Error: ", err)
         }
     }
 
-    // creates a new chirp using PutCommand()
+    /**
+     * creates a new chirp using PutCommand()
+     * 
+     * @param ddb 
+     * @param chirp 
+     */
     public async postChirp(chirp: {}){
         const params = {
             TableName: CHIRPS_TABLE,
@@ -72,14 +89,19 @@ export default class ChripsDao{
         }
 
         try {
-            await client.send(new PutCommand(params));
+            await ddb.send(new PutCommand(params));
             console.log("Chirp has been posted.");
         } catch (err) {
             console.log("Error: ", err);
         }
     }
 
-    // updates a chirp's body using UpdateCommand()
+    /**
+     * updates a chirp's body using UpdateCommand()
+     * 
+     * @param timestamp 
+     * @param chirpBody 
+     */
     public async editChirp(timestamp:string, chirpBody: string){
         const params = {
             TableName: CHIRPS_TABLE,
@@ -89,14 +111,18 @@ export default class ChripsDao{
         }
 
         try {
-         await client.send(new UpdateCommand(params));
+         await ddb.send(new UpdateCommand(params));
             console.log("Chirp updated.");
         } catch (err) {
             console.log("Error: ", err);
         }
     }
 
-    // deletes a user using the DeleteCommand()
+    /**
+     * deletes a user using the DeleteCommand()
+     * 
+     * @param timestamp 
+     */
     public async deleteChirp(timestamp: string){
         const params = {
             TableName: CHIRPS_TABLE,
@@ -104,7 +130,7 @@ export default class ChripsDao{
         }
 
         try {
-            await client.send(new DeleteCommand(params));
+            await ddb.send(new DeleteCommand(params));
             console.log("Chirp deleted.");
         } catch (err){
             console.log("Error: ", err)

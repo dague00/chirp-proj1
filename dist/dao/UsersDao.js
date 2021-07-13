@@ -9,30 +9,43 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// import dynamodb, dotenv, & bcrypt, calls dotenv config
 const client_dynamodb_1 = require("@aws-sdk/client-dynamodb");
 const lib_dynamodb_1 = require("@aws-sdk/lib-dynamodb");
 const dotenv_1 = require("dotenv");
+const functions_1 = require("../shared/functions");
+const constants_1 = require("../shared/constants");
 dotenv_1.config();
-// creates a new dynamodb client, defines users table
-const client = new client_dynamodb_1.DynamoDBClient({ region: process.env.AWS_DEFAULT_REGION });
 const USERS_TABLE = process.env.USERS_TABLE;
+const ddb = !constants_1.isTest ?
+    new client_dynamodb_1.DynamoDBClient({ region: process.env.AWS_DEFAULT_REGION }) :
+    new client_dynamodb_1.DynamoDBClient(constants_1.config_test);
 // default usersDao class
 class UsersDao {
-    // gets all users using ScanCommand()
+    /**
+     * gets all users using ScanCommand()
+     *
+     * @param ddb
+     * @returns
+     */
     getAllUsers() {
         return __awaiter(this, void 0, void 0, function* () {
             const params = { TableName: USERS_TABLE };
             try {
-                const users = yield client.send(new client_dynamodb_1.ScanCommand(params));
-                return users.Items;
+                const users = yield ddb.send(new client_dynamodb_1.ScanCommand(params));
+                return users.Items.map(functions_1.formatScanResponse);
             }
             catch (err) {
                 console.log('Error: ', err);
             }
         });
     }
-    // gets one user using GetCommand()
+    /**
+     * gets one user using GetCommand()
+     *
+     * @param ddb
+     * @param username
+     * @returns
+     */
     getUser(username) {
         return __awaiter(this, void 0, void 0, function* () {
             const params = {
@@ -40,7 +53,7 @@ class UsersDao {
                 Key: { username: username }
             };
             try {
-                const user = yield client.send(new lib_dynamodb_1.GetCommand(params));
+                const user = yield ddb.send(new lib_dynamodb_1.GetCommand(params));
                 return user.Item;
             }
             catch (err) {
@@ -48,7 +61,12 @@ class UsersDao {
             }
         });
     }
-    // creates a user using PutCommand()
+    /**
+     * creates a user using PutCommand()
+     *
+     * @param ddb
+     * @param user
+     */
     createUser(user) {
         return __awaiter(this, void 0, void 0, function* () {
             const params = {
@@ -56,7 +74,7 @@ class UsersDao {
                 Item: user
             };
             try {
-                yield client.send(new lib_dynamodb_1.PutCommand(params));
+                yield ddb.send(new lib_dynamodb_1.PutCommand(params));
                 console.log('User has been created.');
             }
             catch (err) {
@@ -64,7 +82,13 @@ class UsersDao {
             }
         });
     }
-    // updates a users bio using the UpdateCommand()
+    /**
+     * updates a users bio using the UpdateCommand()
+     *
+     * @param ddb
+     * @param username
+     * @param bio
+     */
     updateUserBio(username, bio) {
         return __awaiter(this, void 0, void 0, function* () {
             const params = {
@@ -74,7 +98,7 @@ class UsersDao {
                 ExpressionAttributeValues: { ':bio': bio }
             };
             try {
-                yield client.send(new lib_dynamodb_1.UpdateCommand(params));
+                yield ddb.send(new lib_dynamodb_1.UpdateCommand(params));
                 console.log('Bio updated.');
             }
             catch (err) {
@@ -82,25 +106,12 @@ class UsersDao {
             }
         });
     }
-    // updates a users password using the UpdateCommand()
-    updateUserPassword(username, password) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const params = {
-                TableName: USERS_TABLE,
-                Key: { username: username },
-                UpdateExpression: 'set password = :password',
-                ExpressionAttributeValues: { ':password': password }
-            };
-            try {
-                yield client.send(new lib_dynamodb_1.UpdateCommand(params));
-                console.log('Password updated.');
-            }
-            catch (err) {
-                console.log('Error: ', err);
-            }
-        });
-    }
-    // deletes a user using the DeleteCommand()
+    /**
+     * deletes a user using the DeleteCommand()
+     *
+     * @param ddb
+     * @param username
+     */
     deleteUser(username) {
         return __awaiter(this, void 0, void 0, function* () {
             const params = {
@@ -108,7 +119,7 @@ class UsersDao {
                 Key: { username: username }
             };
             try {
-                yield client.send(new lib_dynamodb_1.DeleteCommand(params));
+                yield ddb.send(new lib_dynamodb_1.DeleteCommand(params));
                 console.log('User deleted.');
             }
             catch (err) {

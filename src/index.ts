@@ -1,4 +1,7 @@
 import express from 'express';
+import cors from 'cors';
+import { isTest } from './shared/constants';
+
 import {
   getChirps,
   getUserChirps,
@@ -23,6 +26,7 @@ APP.use(cors());
 /** Set up Express Router */
 APP.use(express.json());
 APP.use(express.urlencoded({ extended: true }));
+APP.use(cors());
 
 /** Set up Users Endpoint */
 APP.get('/user/all', getAllUsers);
@@ -40,6 +44,13 @@ APP.put('/chirp/:timestamp', updateChirp);
 APP.delete('/chirp/:timestamp', deleteOneChirp);
 
 /** Begin Listening for Requests */
-APP.listen(PORT, () => {
-  console.log('Hi! We are up and listening on port: ', PORT);
-});
+if (!isTest){
+  APP.listen(PORT, () => {
+    console.log('Hi! We are up and listening on port: ', PORT);
+  });
+}
+else {
+  let message = 'In testing mode!\nIf this was an accident, ';
+  message += 'find out why isTest in src/shared/constants.ts was set to true!'
+  console.log(message);
+}
