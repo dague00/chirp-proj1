@@ -17,7 +17,6 @@ import {
   editUserBio,
   deleteUser
 } from './controllers/userControllers';
-import cors from 'cors';
 
 const PORT = 3000;
 export const APP = express();
