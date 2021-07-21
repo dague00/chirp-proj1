@@ -34,17 +34,6 @@ To-do list:
 
 ## Getting Started
    
-(include git clone command)
-(include all environment setup steps)
-
-> Be sure to include BOTH Windows and Unix command  
-> Be sure to mention if the commands only work on a specific platform (eg. AWS, GCP)
-
-- All the `code` required to get started
-- Images of what it should look like
-
-## Usage
-
 To Develop:
 - Make sure you have NodeJS installed.
 - Clone the repo: ```git clone https://github.com/dague00/chirp-proj1.git path-to-local-folder```.
@@ -62,6 +51,13 @@ To Keep Deployed Code Running:
 - Install pm2 globally: `npm install pm2 -g`
 - Run `pm2 start dist/index.js`
 - See the [pm2 documentation](https://pm2.keymetrics.io/docs/usage/quick-start/) for more information on running the service at startup.
+
+
+## Usage
+
+The following API calls can be made.
+A `:` in front of a portion of the path means to replace with desired value.
+All request/response bodies are in JSON.
 
 #### Users
 - `GET` to `/user/all` will get all users
