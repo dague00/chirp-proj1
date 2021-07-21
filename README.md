@@ -13,6 +13,7 @@ This repo contains the API which handles the CRUD operations required on our chi
 - Express
 - NodeJS
 - DynamoDB
+- Jest (w/ Dynalite)
 
 ## Features
 
