@@ -45,10 +45,52 @@ To-do list:
 
 ## Usage
 
-The following API calls can be made:
+To Develop:
+- Make sure you have NodeJS installed.
+- Clone the repo: ```git clone https://github.com/dague00/chirp-proj1.git path-to-local-folder```.
+- Enter the directory of your folder on your terminal: ```cd path-to-local-folder```.
+- Run ```npm install``` to get dependencies installed.
+- Run ```npm start``` to run the app in development mode.
+
+To Build (do To Devlop steps first):
+- In a terminal inside the project folder run `npm run compile`.
+
+To Run Built Code (test):
+- Run `node dist/index.js` after build. If all goes well, see next section for keeping the service running on a server without intervention.
+
+To Keep Deployed Code Running:
+- Install pm2 globally: `npm install pm2 -g`
+- Run `pm2 start dist/index.js`
+- See the [pm2 documentation](https://pm2.keymetrics.io/docs/usage/quick-start/) for more information on running the service at startup.
+
+#### Users
 - `GET` to `/user/all` will get all users
-- `GET` to `/user/:username` will get a single user (replace `:username` with the username to find)
-- `POST` to `/user` will create a user; include details in the body:
+- `GET` to `/user/:username` will get a single user
+- `POST` to `/user` will create a user; requires the following information:
+   ```JSON
+   {
+     "username": string,
+     "bio": string
+   }
+   ```
+- `PUT` to `/user/:username/bio` will edit the user's bio
+- `DELETE` to `/usr/:username` will delete the user
+
+#### Chirps
+- `GET` to `/chirp/all` will get all chirps
+- `GET` to `/:username` will get all chirps by one user
+- `GET` to `/chirp/:timestamp` will get a specific chirp
+- `POST` to `/chirp` will add a chirp; requires the following information:
+   ```JSON
+   {
+      "username": string,
+      "body": string,
+      "timestamp": string
+   }
+   ```
+   Note that the timestamp is in string format; this should be a numerical value cast to a string for DB purposes.
+- `PUT` to `/chirp/:timestamp` will update (edit) a chirp
+- `DELETE` to `/chirp/:timestamp` will delete a chirp
 
 ## Contributors
 
