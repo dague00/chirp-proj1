@@ -16,7 +16,6 @@ This repo contains the API which handles the CRUD operations required on our chi
 
 ## Features
 
-List of features ready and TODOs for future development
 - Can read all chirps from DB
 - Can create new chirps in DB
 - Can edit chirps
