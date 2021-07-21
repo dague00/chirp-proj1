@@ -5,24 +5,32 @@ The interface used can be found at [dague00/chirp-react](https://github.com/dagu
 
 ## Project Description
 
-Here goes your awesome project description!
+This social media application allows for text "chirps" to be sent for all to see!
+This repo contains the API which handles the CRUD operations required on our chirps database.
 
 ## Technologies Used
 
-* Tech 1 - version 1.0
-* Tech 2 - version 2.0
-* Tech 3 - version 3.0
+- Express
+- NodeJS
+- DynamoDB
 
 ## Features
 
 List of features ready and TODOs for future development
-* Awesome feature 1
-* Awesome feature 2
-* Awesome feature 3
+- Can read all chirps from DB
+- Can create new chirps in DB
+- Can edit chirps
+- Can delete chirps
+- Can create new users in DB
+- Can read user data from DB
 
 To-do list:
-* Wow improvement to be done 1
-* Wow improvement to be done 2
+- Users should be able to include photos in chirps
+- Users should be able to like chirps
+- Users should be able to comment on chirps
+- Users should be able to change profile pictures
+- Users should be able to see others' bios
+- Users should be able to self-validate their emails/username
 
 ## Getting Started
    
@@ -37,13 +45,19 @@ To-do list:
 
 ## Usage
 
-> Here, you instruct other people on how to use your project after they’ve installed it. This would also be a good place to include screenshots of your project in action.
+The following API calls can be made:
+- `GET` to `/user/all` will get all users
+- `GET` to `/user/:username` will get a single user (replace `:username` with the username to find)
+- `POST` to `/user` will create a user; include details in the body:
 
 ## Contributors
 
-> Here list the people who have contributed to this project. (ignore this section, if its a solo project)
+- [Daguinson Fleurantin](https://github.com/dague00)
+- [Red Oral](https://github.com/redoral)
+- [Marc Skwarczynski](https://github.com/marcski55)
+- [Caleb Sword](https://github.com/calebmsword)
 
 ## License
 
-This project uses the following license: [<license_name>](<link>).
+This project uses the following license: [MIT](https://github.com/dague00/chirp-proj1/blob/51cb09bfc21f852797b836455cc1a29b2e18bd4e/LICENSE).
 
